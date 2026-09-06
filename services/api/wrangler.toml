@@ -1,0 +1,76 @@
+# BarlesChailey API — Cloudflare Worker
+#
+# Secrets (set with `wrangler secret put NAME --env <env>`):
+#   DATABASE_URL                 Neon owner connection string (pooled, sslmode=require)
+#   DATABASE_AUTHENTICATED_URL   Optional: Neon "authenticated" role URL for RLS-enforced user queries
+#   PUSH_SECRET                  Shared secret the station Pi sends in X-Push-Secret
+#   GOOGLE_MAPS_API_KEY          Geocoding API key (restrict to Geocoding API in Google Cloud)
+#   EXPO_ACCESS_TOKEN            Optional: enables "enhanced push security" on the Expo push API
+#   API_KEY_PEPPER               Random string mixed into API key hashes
+#
+# Plain vars live below per environment.
+
+name = "barleschailey-api"
+main = "src/index.ts"
+compatibility_date = "2026-09-01"
+compatibility_flags = ["nodejs_compat"]
+workers_dev = true
+
+[observability]
+enabled = true
+
+[triggers]
+crons = ["*/15 * * * *"]
+
+[vars]
+APP_ENV = "development"
+FEED_SOURCE = "mcfrs-fsas"
+FEED_TIMEZONE = "America/New_York"
+STALE_AFTER_SECONDS = "20"
+CLEAR_GRACE_SECONDS = "20"
+NEON_AUTH_URL = "https://ep-floral-night-aujf5smv.neonauth.c-10.us-east-1.aws.neon.tech/neondb/auth"
+NEON_AUTH_JWKS_URL = "https://ep-floral-night-aujf5smv.neonauth.c-10.us-east-1.aws.neon.tech/neondb/auth/.well-known/jwks.json"
+# Comma-separated emails that are auto-approved as admins on first sign-in.
+ADMIN_EMAILS = ""
+# 'critical' requires the Apple Critical Alerts entitlement in the app build; 'time-sensitive' needs no approval.
+ALERT_INTERRUPTION_LEVEL = "time-sensitive"
+ALERTS_CRITICAL_SOUND = "false"
+CORS_ORIGINS = "http://localhost:8081"
+
+[env.staging]
+name = "barleschailey-api-staging"
+[env.staging.vars]
+APP_ENV = "staging"
+FEED_SOURCE = "mcfrs-fsas"
+FEED_TIMEZONE = "America/New_York"
+STALE_AFTER_SECONDS = "20"
+CLEAR_GRACE_SECONDS = "20"
+NEON_AUTH_URL = "REPLACE_WITH_DEV_BRANCH_AUTH_URL"
+NEON_AUTH_JWKS_URL = "REPLACE_WITH_DEV_BRANCH_AUTH_URL/.well-known/jwks.json"
+ADMIN_EMAILS = ""
+ALERT_INTERRUPTION_LEVEL = "time-sensitive"
+ALERTS_CRITICAL_SOUND = "false"
+CORS_ORIGINS = ""
+[env.staging.triggers]
+crons = ["*/15 * * * *"]
+[env.staging.observability]
+enabled = true
+
+[env.production]
+name = "barleschailey-api"
+[env.production.vars]
+APP_ENV = "production"
+FEED_SOURCE = "mcfrs-fsas"
+FEED_TIMEZONE = "America/New_York"
+STALE_AFTER_SECONDS = "20"
+CLEAR_GRACE_SECONDS = "20"
+NEON_AUTH_URL = "https://ep-floral-night-aujf5smv.neonauth.c-10.us-east-1.aws.neon.tech/neondb/auth"
+NEON_AUTH_JWKS_URL = "https://ep-floral-night-aujf5smv.neonauth.c-10.us-east-1.aws.neon.tech/neondb/auth/.well-known/jwks.json"
+ADMIN_EMAILS = ""
+ALERT_INTERRUPTION_LEVEL = "time-sensitive"
+ALERTS_CRITICAL_SOUND = "false"
+CORS_ORIGINS = ""
+[env.production.triggers]
+crons = ["*/15 * * * *"]
+[env.production.observability]
+enabled = true

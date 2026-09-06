@@ -1,0 +1,31 @@
+{
+  "name": "@barleschailey/api",
+  "version": "1.0.0",
+  "private": true,
+  "description": "BarlesChailey feed + alert engine (Cloudflare Worker)",
+  "type": "module",
+  "scripts": {
+    "dev": "wrangler dev",
+    "deploy:staging": "wrangler deploy --env staging",
+    "deploy:production": "wrangler deploy --env production",
+    "typecheck": "tsc --noEmit -p tsconfig.json",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "migrate": "node --experimental-strip-types scripts/migrate.ts",
+    "create-api-key": "node --experimental-strip-types scripts/create-api-key.ts",
+    "cf-typegen": "wrangler types"
+  },
+  "dependencies": {
+    "@barleschailey/feed": "*",
+    "@neondatabase/serverless": "^1.1.0",
+    "hono": "^4.13.7",
+    "jose": "^6.2.12",
+    "zod": "^4.5.4"
+  },
+  "devDependencies": {
+    "@cloudflare/workers-types": "^4.20260901.0",
+    "typescript": "^5.9.3",
+    "vitest": "^3.2.4",
+    "wrangler": "^4.129.0"
+  }
+}

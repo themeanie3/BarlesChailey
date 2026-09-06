@@ -1,0 +1,22 @@
+{
+  "name": "@barleschailey/feed",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Standardized MCFRS dispatch feed contract (v1): types, zod schemas, call-type rules",
+  "type": "module",
+  "main": "./src/index.ts",
+  "types": "./src/index.ts",
+  "exports": {
+    ".": "./src/index.ts",
+    "./call-types": "./src/call-types.ts"
+  },
+  "scripts": {
+    "typecheck": "tsc --noEmit -p tsconfig.json"
+  },
+  "dependencies": {
+    "zod": "^4.5.4"
+  },
+  "devDependencies": {
+    "typescript": "^5.9.3"
+  }
+}

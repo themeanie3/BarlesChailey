@@ -1,0 +1,8 @@
+# Copy to services/api/.dev.vars for `wrangler dev`. Never commit .dev.vars.
+DATABASE_URL=postgresql://user:password@ep-xxx-pooler.c-10.us-east-1.aws.neon.tech/neondb?sslmode=require
+DATABASE_AUTHENTICATED_URL=
+PUSH_SECRET=change-me-long-random
+GOOGLE_MAPS_API_KEY=
+EXPO_ACCESS_TOKEN=
+API_KEY_PEPPER=change-me-long-random
+ADMIN_EMAILS=you@example.com

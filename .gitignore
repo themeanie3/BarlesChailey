@@ -1,0 +1,44 @@
+# dependencies
+node_modules/
+.pnp
+.pnp.js
+
+# expo / native
+.expo/
+dist/
+web-build/
+ios/
+android/
+*.orig.*
+*.jks
+*.p8
+*.p12
+*.key
+*.mobileprovision
+expo-env.d.ts
+.expo-shared/
+
+# secrets and local env
+.env
+.env.*
+!.env.example
+services/api/.dev.vars
+services/api/.wrangler/
+.wrangler/
+credentials.json
+google-services.json
+GoogleService-Info.plist
+
+# build / tooling
+*.tsbuildinfo
+coverage/
+.DS_Store
+*.log
+npm-debug.*
+yarn-error.*
+worker-configuration.d.ts
+
+# python
+__pycache__/
+*.pyc
+.venv/
