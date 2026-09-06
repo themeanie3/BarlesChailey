@@ -58,7 +58,15 @@ $$;
 CREATE OR REPLACE FUNCTION set_updated_at() RETURNS trigger
 LANGUAGE plpgsql AS $$
 BEGIN
-  NEW.updated_at = now();
+  -- Only bump updated_at when something a consumer cares about changed.
+  -- last_seen_at is refreshed on every station push and must not move the
+  -- "since" cursor that clients poll with.
+  IF NEW.version IS DISTINCT FROM OLD.version
+     OR NEW.status IS DISTINCT FROM OLD.status
+     OR NEW.lat IS DISTINCT FROM OLD.lat
+     OR NEW.lon IS DISTINCT FROM OLD.lon THEN
+    NEW.updated_at = now();
+  END IF;
   RETURN NEW;
 END $$;
 

@@ -1,0 +1,71 @@
+# Push to `main` (or run manually): deploy the production Worker, build the
+# store binary, and hand it to TestFlight for the internal group.
+name: Production
+
+on:
+  push:
+    branches: ['main']
+  workflow_dispatch: {}
+
+jobs:
+  check:
+    name: Typecheck and test
+    steps:
+      - uses: eas/checkout
+      - uses: eas/install_node_modules
+      - run: npm run check
+
+  deploy_api:
+    name: Deploy Worker (production)
+    needs: [check]
+    environment: production
+    steps:
+      - uses: eas/checkout
+      - uses: eas/install_node_modules
+      - name: wrangler deploy --env production
+        run: npm run deploy:production -w @barleschailey/api
+
+  fingerprint:
+    name: Fingerprint
+    needs: [check]
+    type: fingerprint
+    environment: production
+
+  get_build:
+    name: Reuse build if native code is unchanged
+    needs: [fingerprint]
+    type: get-build
+    params:
+      platform: ios
+      profile: production
+      fingerprint_hash: ${{ needs.fingerprint.outputs.ios_fingerprint_hash }}
+
+  build_ios:
+    name: Build iOS (production)
+    needs: [get_build]
+    if: ${{ !needs.get_build.outputs.build_id }}
+    type: build
+    params:
+      platform: ios
+      profile: production
+
+  testflight:
+    name: Submit to TestFlight
+    needs: [build_ios]
+    type: testflight
+    params:
+      build_id: ${{ needs.build_ios.outputs.build_id }}
+      profile: production
+      internal_groups: ['RVFD']
+      changelog: ${{ github.commit_message || 'Production build' }}
+
+  update:
+    name: Publish OTA update (production channel)
+    needs: [get_build]
+    if: ${{ needs.get_build.outputs.build_id }}
+    type: update
+    environment: production
+    params:
+      channel: production
+      platform: ios
+      message: ${{ github.commit_message || 'production update' }}

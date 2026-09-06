@@ -1,0 +1,62 @@
+# Push to `develop` (or run manually): deploy the staging Worker and ship an
+# internal iOS preview build with the `preview` EAS environment.
+name: Staging
+
+on:
+  push:
+    branches: ['develop']
+  workflow_dispatch: {}
+
+jobs:
+  check:
+    name: Typecheck and test
+    steps:
+      - uses: eas/checkout
+      - uses: eas/install_node_modules
+      - run: npm run check
+
+  deploy_api:
+    name: Deploy Worker (staging)
+    needs: [check]
+    environment: preview
+    steps:
+      - uses: eas/checkout
+      - uses: eas/install_node_modules
+      - name: wrangler deploy --env staging
+        # CLOUDFLARE_API_TOKEN and CLOUDFLARE_ACCOUNT_ID come from the `preview` EAS environment (secret visibility).
+        run: npm run deploy:staging -w @barleschailey/api
+
+  fingerprint:
+    name: Fingerprint
+    needs: [check]
+    type: fingerprint
+    environment: preview
+
+  get_build:
+    name: Reuse build if native code is unchanged
+    needs: [fingerprint]
+    type: get-build
+    params:
+      platform: ios
+      profile: preview
+      fingerprint_hash: ${{ needs.fingerprint.outputs.ios_fingerprint_hash }}
+
+  build_ios:
+    name: Build iOS (preview)
+    needs: [get_build]
+    if: ${{ !needs.get_build.outputs.build_id }}
+    type: build
+    params:
+      platform: ios
+      profile: preview
+
+  update:
+    name: Publish OTA update (preview channel)
+    needs: [get_build]
+    if: ${{ needs.get_build.outputs.build_id }}
+    type: update
+    environment: preview
+    params:
+      channel: preview
+      platform: ios
+      message: ${{ github.commit_message || 'staging update' }}

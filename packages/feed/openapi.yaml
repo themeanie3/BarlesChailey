@@ -1,0 +1,288 @@
+openapi: 3.1.0
+info:
+  title: BarlesChailey Dispatch Feed
+  version: "1.0.0"
+  description: |
+    Standardized MCFRS dispatch feed and responder alerting API.
+
+    **Authentication**
+    * Members: `Authorization: Bearer <Neon Auth JWT>` (obtained from the Neon Auth `/token` endpoint after sign-in).
+    * Servers / dashboards: `X-Api-Key: bck_...` with scopes `read:feed` and/or `ingest`.
+    * Station ingest: `X-Push-Secret: <shared secret>` (legacy-compatible with sta03-dashboard `/push`).
+servers:
+  - url: https://barleschailey-api.<account>.workers.dev
+  - url: https://barleschailey-api-staging.<account>.workers.dev
+security:
+  - bearer: []
+  - apiKey: []
+tags:
+  - name: feed
+  - name: ingest
+  - name: me
+  - name: devices
+  - name: admin
+paths:
+  /healthz:
+    get:
+      security: []
+      summary: Liveness
+      responses: { "200": { description: OK } }
+  /push:
+    post:
+      tags: [ingest]
+      summary: Station push (sta03-dashboard compatible)
+      description: Body is the raw FSAS HTML table. Returns plain-text `ok`.
+      security: [{ pushSecret: [] }, { apiKey: [] }]
+      parameters:
+        - { name: X-Feed-Ts, in: header, required: false, schema: { type: number }, description: Unix seconds the table was scraped }
+      requestBody: { required: true, content: { text/html: { schema: { type: string } } } }
+      responses:
+        "200": { description: accepted }
+        "400": { description: malformed }
+        "403": { description: bad secret }
+  /v1/ingest/fsas:
+    post:
+      tags: [ingest]
+      summary: Station push (JSON result)
+      security: [{ pushSecret: [] }, { apiKey: [] }]
+      requestBody: { required: true, content: { text/html: { schema: { type: string } } } }
+      responses:
+        "200":
+          description: diff summary
+          content: { application/json: { schema: { $ref: "#/components/schemas/IngestResult" } } }
+  /v1/feed/status:
+    get:
+      tags: [feed]
+      summary: Feed heartbeat
+      responses:
+        "200": { description: OK, content: { application/json: { schema: { $ref: "#/components/schemas/FeedStatus" } } } }
+  /v1/incidents:
+    get:
+      tags: [feed]
+      summary: List incidents
+      parameters:
+        - { name: status, in: query, schema: { type: string, enum: [active, cleared, all], default: active } }
+        - { name: since, in: query, schema: { type: string, format: date-time }, description: Incremental sync — incidents updated after this instant, any status }
+        - { name: limit, in: query, schema: { type: integer, minimum: 1, maximum: 200, default: 100 } }
+        - { name: includeSimulated, in: query, schema: { type: string, enum: ["1"] } }
+      responses:
+        "200": { description: OK, content: { application/json: { schema: { $ref: "#/components/schemas/IncidentList" } } } }
+  /v1/incidents/{id}:
+    get:
+      tags: [feed]
+      summary: Incident with timeline
+      parameters: [{ name: id, in: path, required: true, schema: { type: string, format: uuid } }]
+      responses:
+        "200": { description: OK, content: { application/json: { schema: { $ref: "#/components/schemas/IncidentDetail" } } } }
+        "404": { description: not found }
+  /v1/call-types:
+    get:
+      tags: [feed]
+      summary: Call-type rules in effect
+      responses: { "200": { description: OK } }
+  /v1/me:
+    get:
+      tags: [me]
+      summary: Current user, membership, preferences, devices
+      responses: { "200": { description: OK, content: { application/json: { schema: { $ref: "#/components/schemas/Me" } } } } }
+  /v1/me/preferences:
+    put:
+      tags: [me]
+      summary: Update alert preferences (partial)
+      requestBody: { required: true, content: { application/json: { schema: { $ref: "#/components/schemas/AlertPreferences" } } } }
+      responses: { "200": { description: OK }, "403": { description: pending approval } }
+  /v1/me/alerts:
+    get:
+      tags: [me]
+      summary: Alerts sent to this user
+      responses: { "200": { description: OK } }
+  /v1/devices:
+    post:
+      tags: [devices]
+      summary: Register or refresh this device
+      requestBody: { required: true, content: { application/json: { schema: { $ref: "#/components/schemas/DeviceRegistration" } } } }
+      responses: { "200": { description: OK } }
+  /v1/devices/{id}/location:
+    put:
+      tags: [devices]
+      summary: Report the device's latest fix
+      parameters: [{ name: id, in: path, required: true, schema: { type: string, format: uuid } }]
+      requestBody: { required: true, content: { application/json: { schema: { $ref: "#/components/schemas/LocationUpdate" } } } }
+      responses: { "200": { description: OK } }
+  /v1/devices/{id}:
+    delete:
+      tags: [devices]
+      summary: Unregister device
+      parameters: [{ name: id, in: path, required: true, schema: { type: string, format: uuid } }]
+      responses: { "200": { description: OK } }
+  /v1/devices/{id}/test-alert:
+    post:
+      tags: [devices]
+      summary: Send a test push to this device
+      parameters: [{ name: id, in: path, required: true, schema: { type: string, format: uuid } }]
+      responses: { "200": { description: sent }, "502": { description: push rejected } }
+  /v1/admin/members:
+    get: { tags: [admin], summary: List members, responses: { "200": { description: OK } } }
+  /v1/admin/members/{email}:
+    put:
+      tags: [admin]
+      summary: Invite or update a member
+      parameters: [{ name: email, in: path, required: true, schema: { type: string } }]
+      requestBody: { content: { application/json: { schema: { type: object, properties: { role: { type: string, enum: [admin, member] }, status: { type: string, enum: [pending, active, revoked] }, displayName: { type: string } } } } } }
+      responses: { "200": { description: OK } }
+    delete:
+      tags: [admin]
+      summary: Revoke a member
+      parameters: [{ name: email, in: path, required: true, schema: { type: string } }]
+      responses: { "200": { description: OK } }
+  /v1/admin/call-types/{code}:
+    put:
+      tags: [admin]
+      summary: Create or update a call-type rule
+      parameters: [{ name: code, in: path, required: true, schema: { type: string } }]
+      responses: { "200": { description: OK } }
+  /v1/admin/simulate:
+    post:
+      tags: [admin]
+      summary: Inject a synthetic incident and run the alert matcher
+      requestBody: { required: true, content: { application/json: { schema: { type: object, required: [lat, lon], properties: { lat: { type: number }, lon: { type: number }, address: { type: string }, code: { type: string }, box: { type: string }, units: { type: array, items: { type: string } } } } } } }
+      responses: { "200": { description: OK } }
+  /v1/admin/stats:
+    get: { tags: [admin], summary: Operational counters, responses: { "200": { description: OK } } }
+  /v1/admin/api-keys:
+    get: { tags: [admin], summary: List API keys, responses: { "200": { description: OK } } }
+    post:
+      tags: [admin]
+      summary: Create an API key (plaintext returned once)
+      requestBody: { required: true, content: { application/json: { schema: { type: object, required: [name, scopes], properties: { name: { type: string }, scopes: { type: array, items: { type: string, enum: ["read:feed", ingest] } } } } } } }
+      responses: { "201": { description: created } }
+  /v1/admin/api-keys/{id}:
+    delete:
+      tags: [admin]
+      summary: Revoke an API key
+      parameters: [{ name: id, in: path, required: true, schema: { type: string, format: uuid } }]
+      responses: { "200": { description: OK } }
+components:
+  securitySchemes:
+    bearer: { type: http, scheme: bearer, bearerFormat: JWT }
+    apiKey: { type: apiKey, in: header, name: X-Api-Key }
+    pushSecret: { type: apiKey, in: header, name: X-Push-Secret }
+  schemas:
+    IncidentCategory: { type: string, enum: [fire, rescue, ems, hazmat, service, other] }
+    Severity: { type: string, enum: [low, normal, high, critical] }
+    Location:
+      type: object
+      required: [lat, lon, formattedAddress, geocodeStatus]
+      properties:
+        lat: { type: number }
+        lon: { type: number }
+        formattedAddress: { type: [string, "null"] }
+        geocodeStatus: { type: string, enum: [pending, ok, failed] }
+    CallType:
+      type: object
+      required: [code, description, category, severity, alertable]
+      properties:
+        code: { type: string, example: HOUSE }
+        description: { type: string, example: HOUSE FIRE }
+        category: { $ref: "#/components/schemas/IncidentCategory" }
+        severity: { $ref: "#/components/schemas/Severity" }
+        alertable: { type: boolean }
+    Incident:
+      type: object
+      required: [id, feedVersion, source, sourceKey, status, dispatchedAt, address, city, location, call, box, station, battalion, units, firstSeenAt, lastSeenAt, clearedAt, updatedAt, version]
+      properties:
+        id: { type: string, format: uuid }
+        feedVersion: { type: integer, const: 1 }
+        source: { type: string, example: mcfrs-fsas }
+        sourceKey: { type: string }
+        status: { type: string, enum: [active, cleared] }
+        dispatchedAt: { type: string, format: date-time }
+        address: { type: string }
+        city: { type: [string, "null"] }
+        location: { oneOf: [{ $ref: "#/components/schemas/Location" }, { type: "null" }] }
+        call: { $ref: "#/components/schemas/CallType" }
+        box: { type: [string, "null"], example: "0314" }
+        station: { type: [string, "null"], example: "03" }
+        battalion: { type: [string, "null"], example: "3" }
+        units: { type: array, items: { type: string } }
+        firstSeenAt: { type: string, format: date-time }
+        lastSeenAt: { type: string, format: date-time }
+        clearedAt: { type: [string, "null"], format: date-time }
+        updatedAt: { type: string, format: date-time }
+        version: { type: integer }
+    IncidentEvent:
+      type: object
+      properties:
+        id: { type: string, format: uuid }
+        incidentId: { type: string, format: uuid }
+        kind: { type: string, enum: [created, call_type_changed, units_changed, geocoded, cleared, reopened] }
+        at: { type: string, format: date-time }
+        data: { type: object }
+    IncidentList:
+      type: object
+      properties:
+        feedVersion: { type: integer }
+        incidents: { type: array, items: { $ref: "#/components/schemas/Incident" } }
+        serverTime: { type: string, format: date-time }
+    IncidentDetail:
+      type: object
+      properties:
+        feedVersion: { type: integer }
+        incident: { $ref: "#/components/schemas/Incident" }
+        events: { type: array, items: { $ref: "#/components/schemas/IncidentEvent" } }
+    FeedStatus:
+      type: object
+      properties:
+        feedVersion: { type: integer }
+        source: { type: string }
+        lastPushAt: { type: [string, "null"], format: date-time }
+        stale: { type: boolean }
+        staleAfterSeconds: { type: integer }
+        activeIncidents: { type: integer }
+        serverTime: { type: string, format: date-time }
+    IngestResult:
+      type: object
+      properties:
+        rows: { type: integer }
+        created: { type: integer }
+        updated: { type: integer }
+        reopened: { type: integer }
+        cleared: { type: integer }
+        alertsQueued: { type: integer }
+    AlertPreferences:
+      type: object
+      properties:
+        enabled: { type: boolean }
+        radiusMiles: { type: number, minimum: 0.25, maximum: 50 }
+        categories: { type: array, items: { $ref: "#/components/schemas/IncidentCategory" }, description: Empty means all }
+        minSeverity: { $ref: "#/components/schemas/Severity" }
+        locationMaxAgeHours: { type: integer, minimum: 1, maximum: 168 }
+        home: { type: [object, "null"], properties: { lat: { type: number }, lon: { type: number }, radiusMiles: { type: number }, label: { type: [string, "null"] } } }
+        quietHours: { type: [object, "null"], properties: { start: { type: string, example: "23:00" }, end: { type: string, example: "06:30" }, allowCritical: { type: boolean } } }
+        snoozeUntil: { type: [string, "null"], format: date-time }
+        alertOnUpgrade: { type: boolean }
+    DeviceRegistration:
+      type: object
+      required: [expoPushToken, platform, appVersion]
+      properties:
+        expoPushToken: { type: string, example: "ExponentPushToken[xxxxxxxx]" }
+        platform: { type: string, enum: [ios, android] }
+        appVersion: { type: string }
+        deviceName: { type: string }
+        criticalAlertsAuthorized: { type: boolean }
+    LocationUpdate:
+      type: object
+      required: [lat, lon, recordedAt]
+      properties:
+        lat: { type: number }
+        lon: { type: number }
+        accuracyM: { type: [number, "null"] }
+        speedMps: { type: [number, "null"] }
+        recordedAt: { type: string, format: date-time }
+    Me:
+      type: object
+      properties:
+        user: { type: object, properties: { id: { type: string }, email: { type: string }, name: { type: [string, "null"] } } }
+        member: { type: object, properties: { role: { type: string, enum: [admin, member] }, status: { type: string, enum: [pending, active, revoked] } } }
+        preferences: { $ref: "#/components/schemas/AlertPreferences" }
+        devices: { type: array, items: { type: object } }

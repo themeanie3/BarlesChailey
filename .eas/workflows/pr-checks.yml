@@ -1,0 +1,14 @@
+name: PR checks
+
+on:
+  pull_request:
+    branches: ['*']
+
+jobs:
+  check:
+    name: Typecheck and test
+    steps:
+      - uses: eas/checkout
+      - uses: eas/install_node_modules
+      - name: Feed + API + app checks
+        run: npm run check

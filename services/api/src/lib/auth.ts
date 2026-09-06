@@ -1,5 +1,5 @@
 import { createRemoteJWKSet, jwtVerify, type JWTPayload } from 'jose';
-import type { MiddlewareHandler } from 'hono';
+import type { Context, MiddlewareHandler } from 'hono';
 import type { Env } from '../env';
 import { listVar } from '../env';
 import { db, type Sql } from './db';
@@ -64,7 +64,8 @@ export const withDb: MiddlewareHandler<AppEnv> = async (c, next) => {
   await next();
 };
 
-export const requireUser: MiddlewareHandler<AppEnv> = async (c, next) => {
+/** Verifies the bearer JWT and stores the user on the context. Returns a 401 response on failure. */
+export async function authenticateUser(c: Context<AppEnv>): Promise<Response | null> {
   const header = c.req.header('authorization') ?? '';
   if (!header.startsWith('Bearer ')) return c.json({ error: 'unauthorized' }, 401);
   let user: AuthUser;
@@ -82,6 +83,12 @@ export const requireUser: MiddlewareHandler<AppEnv> = async (c, next) => {
     }
   }
   c.set('user', user);
+  return null;
+}
+
+export const requireUser: MiddlewareHandler<AppEnv> = async (c, next) => {
+  const denied = await authenticateUser(c);
+  if (denied) return denied;
   await next();
 };
 
@@ -122,12 +129,19 @@ export async function resolveMember(sql: Sql, env: Env, user: AuthUser): Promise
   return { email: row.email, role: row.role, status: row.status };
 }
 
-export const requireMember: MiddlewareHandler<AppEnv> = async (c, next) => {
+/** Resolves membership for the authenticated user. Returns a 403 response unless the member is active. */
+export async function authorizeMember(c: Context<AppEnv>): Promise<Response | null> {
   const member = await resolveMember(c.var.sql, c.env, c.var.user);
   c.set('member', member);
   if (member.status !== 'active') {
     return c.json({ error: member.status === 'revoked' ? 'revoked' : 'pending_approval', member }, 403);
   }
+  return null;
+}
+
+export const requireMember: MiddlewareHandler<AppEnv> = async (c, next) => {
+  const denied = await authorizeMember(c);
+  if (denied) return denied;
   await next();
 };
 
@@ -170,5 +184,7 @@ export const requireReader: MiddlewareHandler<AppEnv> = async (c, next) => {
     }
     return c.json({ error: 'forbidden' }, 403);
   }
-  return requireUser(c, async () => requireMember(c, next));
+  const denied = (await authenticateUser(c)) ?? (await authorizeMember(c));
+  if (denied) return denied;
+  await next();
 };

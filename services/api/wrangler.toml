@@ -45,8 +45,8 @@ FEED_SOURCE = "mcfrs-fsas"
 FEED_TIMEZONE = "America/New_York"
 STALE_AFTER_SECONDS = "20"
 CLEAR_GRACE_SECONDS = "20"
-NEON_AUTH_URL = "REPLACE_WITH_DEV_BRANCH_AUTH_URL"
-NEON_AUTH_JWKS_URL = "REPLACE_WITH_DEV_BRANCH_AUTH_URL/.well-known/jwks.json"
+NEON_AUTH_URL = "https://ep-solitary-meadow-aur80hkt.neonauth.c-10.us-east-1.aws.neon.tech/neondb/auth"
+NEON_AUTH_JWKS_URL = "https://ep-solitary-meadow-aur80hkt.neonauth.c-10.us-east-1.aws.neon.tech/neondb/auth/.well-known/jwks.json"
 ADMIN_EMAILS = ""
 ALERT_INTERRUPTION_LEVEL = "time-sensitive"
 ALERTS_CRITICAL_SOUND = "false"
@@ -74,3 +74,8 @@ CORS_ORIGINS = ""
 crons = ["*/15 * * * *"]
 [env.production.observability]
 enabled = true
+
+[[rules]]
+type = "Text"
+globs = ["**/*.yaml"]
+fallthrough = true

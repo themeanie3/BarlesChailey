@@ -1,0 +1,23 @@
+# Manual: deploy only the Worker to a chosen environment.
+#   eas workflow:run deploy-api.yml -F env=staging
+name: Deploy API
+
+on:
+  workflow_dispatch:
+    inputs:
+      env:
+        type: choice
+        options: [staging, production]
+        default: staging
+        required: true
+
+jobs:
+  deploy:
+    name: Deploy Worker
+    environment: ${{ inputs.env == 'production' && 'production' || 'preview' }}
+    steps:
+      - uses: eas/checkout
+      - uses: eas/install_node_modules
+      - run: npm run api:test
+      - run: npx wrangler deploy --env ${{ inputs.env }}
+        working_directory: services/api
