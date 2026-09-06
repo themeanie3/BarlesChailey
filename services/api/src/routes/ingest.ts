@@ -10,14 +10,8 @@ async function handle(c: Context<AppEnv>, plain: boolean) {
   if (tsHeader != null && !Number.isFinite(ts)) return c.text('bad X-Feed-Ts', 400);
   const html = await c.req.text();
   if (!html.trim()) return c.text('empty body', 400);
-  let ctx: { waitUntil(p: Promise<unknown>): void } | undefined;
   try {
-    ctx = c.executionCtx;
-  } catch {
-    ctx = undefined;
-  }
-  try {
-    const result = await ingestFsas(c.env, c.var.sql, html, ts, ctx);
+    const result = await ingestFsas(c.env, html, ts);
     return plain ? c.text('ok') : c.json(result);
   } catch (err) {
     if (err instanceof IngestError) return plain ? c.text(err.message, err.status as 400) : c.json({ error: err.message }, err.status as 400);

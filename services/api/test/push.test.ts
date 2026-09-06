@@ -4,7 +4,7 @@ import type { Env } from '../src/env';
 import { buildIncidentMessage, buildTestMessage, metersToMilesLabel, shouldUseCriticalSound } from '../src/lib/push';
 
 const env = (over: Partial<Env> = {}): Env => ({
-  DATABASE_URL: '', PUSH_SECRET: '', API_KEY_PEPPER: '', APP_ENV: 'development', FEED_SOURCE: 'mcfrs-fsas', FEED_TIMEZONE: 'America/New_York',
+  DATABASE_URL: '', PUSH_SECRET: '', API_KEY_PEPPER: '', API_TOKEN_SECRET: '', FLUSH_INTERVAL_MINUTES: '30', BOARD: {} as unknown as Env['BOARD'], APP_ENV: 'development', FEED_SOURCE: 'mcfrs-fsas', FEED_TIMEZONE: 'America/New_York',
   STALE_AFTER_SECONDS: '20', CLEAR_GRACE_SECONDS: '20', NEON_AUTH_URL: '', NEON_AUTH_JWKS_URL: '', ADMIN_EMAILS: '',
   ALERT_INTERRUPTION_LEVEL: 'time-sensitive', ALERTS_CRITICAL_SOUND: 'false', CORS_ORIGINS: '', ...over,
 });

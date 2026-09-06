@@ -1,0 +1,3512 @@
+[
+ {
+  "code": "2ND",
+  "description": "Second alarm",
+  "category": "fire",
+  "severity": "critical",
+  "alertable": true,
+  "upgrade": true,
+  "source": "response plans"
+ },
+ {
+  "code": "3RD",
+  "description": "Third alarm",
+  "category": "fire",
+  "severity": "critical",
+  "alertable": true,
+  "upgrade": true,
+  "source": "response plans"
+ },
+ {
+  "code": "4TH",
+  "description": "Fourth alarm",
+  "category": "fire",
+  "severity": "critical",
+  "alertable": true,
+  "upgrade": true,
+  "source": "response plans"
+ },
+ {
+  "code": "AIRCRSHF",
+  "description": "Aircraft crash with fire",
+  "category": "fire",
+  "severity": "critical",
+  "alertable": true,
+  "upgrade": false,
+  "source": "p2 HMFULL"
+ },
+ {
+  "code": "AIRCRSHFW",
+  "description": "Aircraft crash with fire, water",
+  "category": "fire",
+  "severity": "critical",
+  "alertable": true,
+  "upgrade": false,
+  "source": "p2 HMFULLWTR"
+ },
+ {
+  "code": "AIRFIREL",
+  "description": "Aircraft fire, large",
+  "category": "fire",
+  "severity": "critical",
+  "alertable": true,
+  "upgrade": false,
+  "source": "p2 HMFULL"
+ },
+ {
+  "code": "AIRFULLE",
+  "description": "Aircraft emergency, full assignment",
+  "category": "fire",
+  "severity": "critical",
+  "alertable": true,
+  "upgrade": false,
+  "source": "p2 HMFULL"
+ },
+ {
+  "code": "BLDGFIRE",
+  "description": "Building fire",
+  "category": "fire",
+  "severity": "critical",
+  "alertable": true,
+  "upgrade": false,
+  "source": "p2 FJ"
+ },
+ {
+  "code": "BLDGFIRET",
+  "description": "Building fire, occupants trapped",
+  "category": "fire",
+  "severity": "critical",
+  "alertable": true,
+  "upgrade": false,
+  "source": "p1 FJ"
+ },
+ {
+  "code": "BLDGFREX",
+  "description": "Building fire with explosion",
+  "category": "fire",
+  "severity": "critical",
+  "alertable": true,
+  "upgrade": false,
+  "source": "p2 HMFULLFEI"
+ },
+ {
+  "code": "BLDGFREXH",
+  "description": "Building fire with explosion, hazmat",
+  "category": "fire",
+  "severity": "critical",
+  "alertable": true,
+  "upgrade": false,
+  "source": "p2 HMFULLFEI"
+ },
+ {
+  "code": "BLDGFRH",
+  "description": "Building fire, hazmat",
+  "category": "fire",
+  "severity": "critical",
+  "alertable": true,
+  "upgrade": false,
+  "source": "p2 HMFULL"
+ },
+ {
+  "code": "BLDGFRHM",
+  "description": "Building fire, hazmat",
+  "category": "fire",
+  "severity": "critical",
+  "alertable": true,
+  "upgrade": false,
+  "source": "sta03"
+ },
+ {
+  "code": "BLDGFRHMT",
+  "description": "Building fire, hazmat, occupants trapped",
+  "category": "fire",
+  "severity": "critical",
+  "alertable": true,
+  "upgrade": false,
+  "source": "p1 HMFULL"
+ },
+ {
+  "code": "BLDGFRHR",
+  "description": "High-rise building fire",
+  "category": "fire",
+  "severity": "critical",
+  "alertable": true,
+  "upgrade": false,
+  "source": "p2 FK"
+ },
+ {
+  "code": "BLDGFRHRT",
+  "description": "High-rise building fire, occupants trapped",
+  "category": "fire",
+  "severity": "critical",
+  "alertable": true,
+  "upgrade": false,
+  "source": "p1 FK"
+ },
+ {
+  "code": "BLDGFRSMT",
+  "description": "Building fire, smoke showing, occupants trapped",
+  "category": "fire",
+  "severity": "critical",
+  "alertable": true,
+  "upgrade": false,
+  "source": "p1 FJ"
+ },
+ {
+  "code": "BUILDING",
+  "description": "Building fire",
+  "category": "fire",
+  "severity": "critical",
+  "alertable": true,
+  "upgrade": false,
+  "source": "p2 FJ"
+ },
+ {
+  "code": "HOUSE",
+  "description": "House fire",
+  "category": "fire",
+  "severity": "critical",
+  "alertable": true,
+  "upgrade": false,
+  "source": "p2 FJ"
+ },
+ {
+  "code": "HOUSET",
+  "description": "House fire, occupants trapped",
+  "category": "fire",
+  "severity": "critical",
+  "alertable": true,
+  "upgrade": false,
+  "source": "p1 FJ"
+ },
+ {
+  "code": "MAFULL",
+  "description": "Mutual aid full assignment",
+  "category": "fire",
+  "severity": "critical",
+  "alertable": true,
+  "upgrade": true,
+  "source": "sta03"
+ },
+ {
+  "code": "UBOX",
+  "description": "Box alarm upgrade (working fire)",
+  "category": "fire",
+  "severity": "critical",
+  "alertable": true,
+  "upgrade": true,
+  "source": "sta03"
+ },
+ {
+  "code": "UBOXHR",
+  "description": "High-rise box upgrade",
+  "category": "fire",
+  "severity": "critical",
+  "alertable": true,
+  "upgrade": true,
+  "source": "sta03"
+ },
+ {
+  "code": "UBOXW",
+  "description": "Box upgrade, working fire",
+  "category": "fire",
+  "severity": "critical",
+  "alertable": true,
+  "upgrade": true,
+  "source": "sta03"
+ },
+ {
+  "code": "VEHFRBLH",
+  "description": "Vehicle fire near building, hazmat",
+  "category": "fire",
+  "severity": "critical",
+  "alertable": true,
+  "upgrade": false,
+  "source": "p3 HMFULL"
+ },
+ {
+  "code": "VEHFRTRAP",
+  "description": "Vehicle fire with entrapment",
+  "category": "fire",
+  "severity": "critical",
+  "alertable": true,
+  "upgrade": false,
+  "source": "p1 AUTOFREX"
+ },
+ {
+  "code": "AIRFIRES",
+  "description": "Aircraft fire, small",
+  "category": "fire",
+  "severity": "high",
+  "alertable": true,
+  "upgrade": false,
+  "source": "p4 HMADAPT"
+ },
+ {
+  "code": "APLNCM",
+  "description": "Appliance fire, multiple patients",
+  "category": "fire",
+  "severity": "high",
+  "alertable": true,
+  "upgrade": false,
+  "source": "p3 FDMULTP"
+ },
+ {
+  "code": "BLDGFIRS",
+  "description": "Building fire, small",
+  "category": "fire",
+  "severity": "high",
+  "alertable": true,
+  "upgrade": false,
+  "source": "p4 FH"
+ },
+ {
+  "code": "BLDGFIRSM",
+  "description": "Building fire, small, multiple patients",
+  "category": "fire",
+  "severity": "high",
+  "alertable": true,
+  "upgrade": false,
+  "source": "p3 FH"
+ },
+ {
+  "code": "BLDGFRSME",
+  "description": "Building fire, smoke, electrical",
+  "category": "fire",
+  "severity": "high",
+  "alertable": true,
+  "upgrade": false,
+  "source": "p4 HMADAPTFEI"
+ },
+ {
+  "code": "BOATFIREM",
+  "description": "Boat fire, multiple patients",
+  "category": "fire",
+  "severity": "high",
+  "alertable": true,
+  "upgrade": false,
+  "source": "p3 FDMULTP"
+ },
+ {
+  "code": "BOATFROUM",
+  "description": "Boat fire out, multiple patients",
+  "category": "fire",
+  "severity": "high",
+  "alertable": true,
+  "upgrade": false,
+  "source": "p3 FDMULTP"
+ },
+ {
+  "code": "BRUSHLG",
+  "description": "Brush fire, large",
+  "category": "fire",
+  "severity": "high",
+  "alertable": true,
+  "upgrade": false,
+  "source": "p4 BRUSHLG"
+ },
+ {
+  "code": "BRUSHLGB",
+  "description": "Brush fire, large, BLS",
+  "category": "fire",
+  "severity": "high",
+  "alertable": true,
+  "upgrade": false,
+  "source": "p3 BRUSHLG"
+ },
+ {
+  "code": "BRUSHLGM",
+  "description": "Brush fire, large, multiple patients",
+  "category": "fire",
+  "severity": "high",
+  "alertable": true,
+  "upgrade": false,
+  "source": "p3 BRUSHLG1"
+ },
+ {
+  "code": "CHIMNEY",
+  "description": "Chimney fire",
+  "category": "fire",
+  "severity": "high",
+  "alertable": true,
+  "upgrade": false,
+  "source": "p2 FJ"
+ },
+ {
+  "code": "CHIMNEYS",
+  "description": "Chimney fire, small",
+  "category": "fire",
+  "severity": "high",
+  "alertable": true,
+  "upgrade": false,
+  "source": "p4 FH"
+ },
+ {
+  "code": "DECKOVER",
+  "description": "Vehicle fire under deck-over",
+  "category": "fire",
+  "severity": "high",
+  "alertable": true,
+  "upgrade": false,
+  "source": "p4 DECKOVERE"
+ },
+ {
+  "code": "DECKOVH",
+  "description": "Vehicle fire under deck-over, hazmat",
+  "category": "fire",
+  "severity": "high",
+  "alertable": true,
+  "upgrade": false,
+  "source": "p4 HMFULL"
+ },
+ {
+  "code": "OUTFIREM",
+  "description": "Outside fire, multiple patients",
+  "category": "fire",
+  "severity": "high",
+  "alertable": true,
+  "upgrade": false,
+  "source": "p3 FDMULTP"
+ },
+ {
+  "code": "VEHFIREM",
+  "description": "Vehicle fire, multiple patients",
+  "category": "fire",
+  "severity": "high",
+  "alertable": true,
+  "upgrade": false,
+  "source": "p3 FDMULTP"
+ },
+ {
+  "code": "VEHFIRPRK",
+  "description": "Vehicle fire in parking garage",
+  "category": "fire",
+  "severity": "high",
+  "alertable": true,
+  "upgrade": false,
+  "source": "p3 FJ"
+ },
+ {
+  "code": "VEHFRBLDB",
+  "description": "Vehicle fire near building, BLS",
+  "category": "fire",
+  "severity": "high",
+  "alertable": true,
+  "upgrade": false,
+  "source": "p3 FDMULTP"
+ },
+ {
+  "code": "VEHFRTRH",
+  "description": "Vehicle fire, tractor-trailer, hazmat",
+  "category": "fire",
+  "severity": "high",
+  "alertable": true,
+  "upgrade": false,
+  "source": "p3 HMFULL"
+ },
+ {
+  "code": "VFIRPRKH",
+  "description": "Vehicle fire in parking garage, hazmat",
+  "category": "fire",
+  "severity": "high",
+  "alertable": true,
+  "upgrade": false,
+  "source": "p4 HMFULL"
+ },
+ {
+  "code": "APLNCADA",
+  "description": "Appliance fire, adaptive",
+  "category": "fire",
+  "severity": "normal",
+  "alertable": false,
+  "upgrade": false,
+  "source": "p4 FE"
+ },
+ {
+  "code": "APLNCADAB",
+  "description": "Appliance fire, adaptive, BLS",
+  "category": "fire",
+  "severity": "normal",
+  "alertable": false,
+  "upgrade": false,
+  "source": "p4 FF"
+ },
+ {
+  "code": "APLNCB",
+  "description": "Appliance fire, BLS",
+  "category": "fire",
+  "severity": "normal",
+  "alertable": false,
+  "upgrade": false,
+  "source": "p4 FC"
+ },
+ {
+  "code": "APLNCH",
+  "description": "Appliance fire, hazmat",
+  "category": "fire",
+  "severity": "normal",
+  "alertable": false,
+  "upgrade": false,
+  "source": "p4 HMADAPT"
+ },
+ {
+  "code": "APLNCSE",
+  "description": "Appliance fire, single engine",
+  "category": "fire",
+  "severity": "normal",
+  "alertable": false,
+  "upgrade": false,
+  "source": "p5 SE"
+ },
+ {
+  "code": "APPLIANCE",
+  "description": "Appliance fire",
+  "category": "fire",
+  "severity": "normal",
+  "alertable": false,
+  "upgrade": false,
+  "source": "p4 FE"
+ },
+ {
+  "code": "AUTO",
+  "description": "Vehicle incident",
+  "category": "fire",
+  "severity": "normal",
+  "alertable": false,
+  "upgrade": false,
+  "source": "p5 FC"
+ },
+ {
+  "code": "BOATFIRE",
+  "description": "Boat fire",
+  "category": "fire",
+  "severity": "normal",
+  "alertable": false,
+  "upgrade": false,
+  "source": "p4 FE"
+ },
+ {
+  "code": "BOATFIREB",
+  "description": "Boat fire, BLS",
+  "category": "fire",
+  "severity": "normal",
+  "alertable": false,
+  "upgrade": false,
+  "source": "p4 FF"
+ },
+ {
+  "code": "BOATFROUB",
+  "description": "Boat fire out, BLS",
+  "category": "fire",
+  "severity": "normal",
+  "alertable": false,
+  "upgrade": false,
+  "source": "p4 FC"
+ },
+ {
+  "code": "BOATFROUT",
+  "description": "Boat fire out",
+  "category": "fire",
+  "severity": "normal",
+  "alertable": false,
+  "upgrade": false,
+  "source": "p5 SE"
+ },
+ {
+  "code": "BOGS",
+  "description": "Bog fire",
+  "category": "fire",
+  "severity": "normal",
+  "alertable": false,
+  "upgrade": false,
+  "source": "p5 SE"
+ },
+ {
+  "code": "BOGSB",
+  "description": "Bog fire, BLS",
+  "category": "fire",
+  "severity": "normal",
+  "alertable": false,
+  "upgrade": false,
+  "source": "p5 FC"
+ },
+ {
+  "code": "BOGSM",
+  "description": "Bog fire, multiple patients",
+  "category": "fire",
+  "severity": "normal",
+  "alertable": false,
+  "upgrade": false,
+  "source": "p3 FX"
+ },
+ {
+  "code": "BRUSHS",
+  "description": "Brush fire, small",
+  "category": "fire",
+  "severity": "normal",
+  "alertable": false,
+  "upgrade": false,
+  "source": "p5 SE"
+ },
+ {
+  "code": "BRUSHSMB",
+  "description": "Brush fire, small, BLS",
+  "category": "fire",
+  "severity": "normal",
+  "alertable": false,
+  "upgrade": false,
+  "source": "p4 FC"
+ },
+ {
+  "code": "BRUSHSMI",
+  "description": "Brush fire, small, inside",
+  "category": "fire",
+  "severity": "normal",
+  "alertable": false,
+  "upgrade": false,
+  "source": "p4 FC"
+ },
+ {
+  "code": "BRUSHSMM",
+  "description": "Brush fire, small, multiple patients",
+  "category": "fire",
+  "severity": "normal",
+  "alertable": false,
+  "upgrade": false,
+  "source": "p3 FX"
+ },
+ {
+  "code": "BTFIREWTR",
+  "description": "Boat fire on the water",
+  "category": "fire",
+  "severity": "normal",
+  "alertable": false,
+  "upgrade": false,
+  "source": "p4 BOATFIRE"
+ },
+ {
+  "code": "FIREOUT",
+  "description": "Fire out",
+  "category": "fire",
+  "severity": "normal",
+  "alertable": false,
+  "upgrade": false,
+  "source": "p4 FE"
+ },
+ {
+  "code": "FIREOUTH",
+  "description": "Fire out, hazmat",
+  "category": "fire",
+  "severity": "normal",
+  "alertable": false,
+  "upgrade": false,
+  "source": "p4 HMADAPT"
+ },
+ {
+  "code": "ODORSMK",
+  "description": "Odor of smoke",
+  "category": "fire",
+  "severity": "normal",
+  "alertable": false,
+  "upgrade": false,
+  "source": "p4 FE"
+ },
+ {
+  "code": "OUTFIRE",
+  "description": "Outside fire",
+  "category": "fire",
+  "severity": "normal",
+  "alertable": false,
+  "upgrade": false,
+  "source": "p5 SE"
+ },
+ {
+  "code": "OUTFIREB",
+  "description": "Outside fire, BLS",
+  "category": "fire",
+  "severity": "normal",
+  "alertable": false,
+  "upgrade": false,
+  "source": "p4 FC"
+ },
+ {
+  "code": "OUTFRADA",
+  "description": "Outside fire, adaptive",
+  "category": "fire",
+  "severity": "normal",
+  "alertable": false,
+  "upgrade": false,
+  "source": "p5 FE"
+ },
+ {
+  "code": "OUTFRADAB",
+  "description": "Outside fire, adaptive, BLS",
+  "category": "fire",
+  "severity": "normal",
+  "alertable": false,
+  "upgrade": false,
+  "source": "p3 FF"
+ },
+ {
+  "code": "VEHEXP",
+  "description": "Vehicle explosion",
+  "category": "fire",
+  "severity": "normal",
+  "alertable": false,
+  "upgrade": false,
+  "source": "p5 FADA"
+ },
+ {
+  "code": "VEHEXPH",
+  "description": "Vehicle explosion, hazmat",
+  "category": "fire",
+  "severity": "normal",
+  "alertable": false,
+  "upgrade": false,
+  "source": "p4 HMADAMPFEI"
+ },
+ {
+  "code": "VEHFIRE",
+  "description": "Vehicle fire",
+  "category": "fire",
+  "severity": "normal",
+  "alertable": false,
+  "upgrade": false,
+  "source": "p5 FEMP"
+ },
+ {
+  "code": "VEHFIREB",
+  "description": "Vehicle fire, BLS",
+  "category": "fire",
+  "severity": "normal",
+  "alertable": false,
+  "upgrade": false,
+  "source": "p3 FX"
+ },
+ {
+  "code": "VEHFIRH",
+  "description": "Vehicle fire, hazmat",
+  "category": "fire",
+  "severity": "normal",
+  "alertable": false,
+  "upgrade": false,
+  "source": "p5 HMADMPD"
+ },
+ {
+  "code": "VEHFIRLG",
+  "description": "Vehicle fire, large",
+  "category": "fire",
+  "severity": "normal",
+  "alertable": false,
+  "upgrade": false,
+  "source": "p5 FADA"
+ },
+ {
+  "code": "VEHFIRLGB",
+  "description": "Vehicle fire, large, BLS",
+  "category": "fire",
+  "severity": "normal",
+  "alertable": false,
+  "upgrade": false,
+  "source": "p5 FF"
+ },
+ {
+  "code": "VEHFRBLDG",
+  "description": "Vehicle fire near building",
+  "category": "fire",
+  "severity": "normal",
+  "alertable": false,
+  "upgrade": false,
+  "source": "p4 FADA"
+ },
+ {
+  "code": "VEHFREXP",
+  "description": "Vehicle fire with explosion",
+  "category": "fire",
+  "severity": "normal",
+  "alertable": false,
+  "upgrade": false,
+  "source": "p3 HMADAPTFEI"
+ },
+ {
+  "code": "VEHFRLGH",
+  "description": "Vehicle fire, large, hazmat",
+  "category": "fire",
+  "severity": "normal",
+  "alertable": false,
+  "upgrade": false,
+  "source": "p4 HMADMPD"
+ },
+ {
+  "code": "APLNCSER",
+  "description": "Appliance fire, single engine, routine",
+  "category": "fire",
+  "severity": "low",
+  "alertable": false,
+  "upgrade": false,
+  "source": "p6 SE"
+ },
+ {
+  "code": "OUTFIRER",
+  "description": "Outside fire, routine",
+  "category": "fire",
+  "severity": "low",
+  "alertable": false,
+  "upgrade": false,
+  "source": "p6 SE"
+ },
+ {
+  "code": "AIRCRSHP",
+  "description": "Aircraft crash",
+  "category": "rescue",
+  "severity": "critical",
+  "alertable": true,
+  "upgrade": false,
+  "source": "p3 PHM"
+ },
+ {
+  "code": "AIRCRSHPW",
+  "description": "Aircraft crash in water",
+  "category": "rescue",
+  "severity": "critical",
+  "alertable": true,
+  "upgrade": false,
+  "source": "p3 PHMWTR"
+ },
+ {
+  "code": "DSASTRTRP",
+  "description": "Disaster, people trapped",
+  "category": "rescue",
+  "severity": "critical",
+  "alertable": true,
+  "upgrade": false,
+  "source": "p2 SA"
+ },
+ {
+  "code": "ENTRAP1",
+  "description": "Entrapment, ALS1",
+  "category": "rescue",
+  "severity": "critical",
+  "alertable": true,
+  "upgrade": false,
+  "source": "p3 PA1"
+ },
+ {
+  "code": "ENTRAP2",
+  "description": "Entrapment, ALS2",
+  "category": "rescue",
+  "severity": "critical",
+  "alertable": true,
+  "upgrade": false,
+  "source": "p3 PA2"
+ },
+ {
+  "code": "ENTRAPHM1",
+  "description": "Entrapment with hazmat, ALS1",
+  "category": "rescue",
+  "severity": "critical",
+  "alertable": true,
+  "upgrade": false,
+  "source": "p3 PHM"
+ },
+ {
+  "code": "ENTRAPHM2",
+  "description": "Entrapment with hazmat, ALS2",
+  "category": "rescue",
+  "severity": "critical",
+  "alertable": true,
+  "upgrade": false,
+  "source": "p2 PHM"
+ },
+ {
+  "code": "FLDVEHT",
+  "description": "Vehicle in flood water, occupants trapped",
+  "category": "rescue",
+  "severity": "critical",
+  "alertable": true,
+  "upgrade": false,
+  "source": "sta03"
+ },
+ {
+  "code": "METCRSH",
+  "description": "Metro crash",
+  "category": "rescue",
+  "severity": "critical",
+  "alertable": true,
+  "upgrade": false,
+  "source": "sta03"
+ },
+ {
+  "code": "METRO",
+  "description": "Metro rail incident",
+  "category": "rescue",
+  "severity": "critical",
+  "alertable": true,
+  "upgrade": false,
+  "source": "sta03"
+ },
+ {
+  "code": "METRORESQP",
+  "description": "Metro rescue, person",
+  "category": "rescue",
+  "severity": "critical",
+  "alertable": true,
+  "upgrade": false,
+  "source": "sta03"
+ },
+ {
+  "code": "PIC1TRAP",
+  "description": "Collision with entrapment",
+  "category": "rescue",
+  "severity": "critical",
+  "alertable": true,
+  "upgrade": false,
+  "source": "sta03"
+ },
+ {
+  "code": "PICMULT1",
+  "description": "Multi-vehicle collision, ALS1",
+  "category": "rescue",
+  "severity": "critical",
+  "alertable": true,
+  "upgrade": false,
+  "source": "p3 PMCI"
+ },
+ {
+  "code": "PICMULT2",
+  "description": "Multi-vehicle collision, ALS2",
+  "category": "rescue",
+  "severity": "critical",
+  "alertable": true,
+  "upgrade": false,
+  "source": "p2 PMCI"
+ },
+ {
+  "code": "PICTRAP1",
+  "description": "Collision with entrapment, ALS1",
+  "category": "rescue",
+  "severity": "critical",
+  "alertable": true,
+  "upgrade": false,
+  "source": "p3 PA1"
+ },
+ {
+  "code": "PICTRAP2",
+  "description": "Collision with entrapment, ALS2",
+  "category": "rescue",
+  "severity": "critical",
+  "alertable": true,
+  "upgrade": false,
+  "source": "sta03"
+ },
+ {
+  "code": "PICTRAPF2",
+  "description": "Collision with entrapment and fire, ALS2",
+  "category": "rescue",
+  "severity": "critical",
+  "alertable": true,
+  "upgrade": false,
+  "source": "p1 AUTOFREX"
+ },
+ {
+  "code": "PICTRFHM2",
+  "description": "Collision, entrapment, fire and hazmat, ALS2",
+  "category": "rescue",
+  "severity": "critical",
+  "alertable": true,
+  "upgrade": false,
+  "source": "p1 PHM"
+ },
+ {
+  "code": "PICTRFM2",
+  "description": "Collision with entrapment and fire, ALS2",
+  "category": "rescue",
+  "severity": "critical",
+  "alertable": true,
+  "upgrade": false,
+  "source": "sta03"
+ },
+ {
+  "code": "PICTRPHM1",
+  "description": "Collision with entrapment, hazmat, ALS1",
+  "category": "rescue",
+  "severity": "critical",
+  "alertable": true,
+  "upgrade": false,
+  "source": "p3 PHM"
+ },
+ {
+  "code": "PICTRPHM2",
+  "description": "Collision with entrapment, hazmat, ALS2",
+  "category": "rescue",
+  "severity": "critical",
+  "alertable": true,
+  "upgrade": false,
+  "source": "sta03"
+ },
+ {
+  "code": "TRAINCRSH",
+  "description": "Train crash",
+  "category": "rescue",
+  "severity": "critical",
+  "alertable": true,
+  "upgrade": false,
+  "source": "p2 TRC"
+ },
+ {
+  "code": "TRAINFIRE",
+  "description": "Train fire",
+  "category": "rescue",
+  "severity": "critical",
+  "alertable": true,
+  "upgrade": false,
+  "source": "p2 TRC"
+ },
+ {
+  "code": "TRAINPED",
+  "description": "Train vs pedestrian",
+  "category": "rescue",
+  "severity": "critical",
+  "alertable": true,
+  "upgrade": false,
+  "source": "p2 TRAT"
+ },
+ {
+  "code": "TRTCOLAPS",
+  "description": "Structural collapse",
+  "category": "rescue",
+  "severity": "critical",
+  "alertable": true,
+  "upgrade": false,
+  "source": "p2 RES"
+ },
+ {
+  "code": "TRTCOLAPW",
+  "description": "Collapse with water rescue",
+  "category": "rescue",
+  "severity": "critical",
+  "alertable": true,
+  "upgrade": false,
+  "source": "p3 TECHWTR"
+ },
+ {
+  "code": "TRTCONFIN",
+  "description": "Confined space rescue",
+  "category": "rescue",
+  "severity": "critical",
+  "alertable": true,
+  "upgrade": false,
+  "source": "p2 RES"
+ },
+ {
+  "code": "TRTTECH",
+  "description": "Technical rescue",
+  "category": "rescue",
+  "severity": "critical",
+  "alertable": true,
+  "upgrade": false,
+  "source": "p2 RES"
+ },
+ {
+  "code": "TRTTECHW",
+  "description": "Technical rescue with water resources",
+  "category": "rescue",
+  "severity": "critical",
+  "alertable": true,
+  "upgrade": false,
+  "source": "p3 TECHWTR"
+ },
+ {
+  "code": "TRTTRENCH",
+  "description": "Trench rescue",
+  "category": "rescue",
+  "severity": "critical",
+  "alertable": true,
+  "upgrade": false,
+  "source": "p2 RES"
+ },
+ {
+  "code": "DSASTRDAN",
+  "description": "Disaster, danger",
+  "category": "rescue",
+  "severity": "high",
+  "alertable": true,
+  "upgrade": false,
+  "source": "p3 SA"
+ },
+ {
+  "code": "ELEVTRTRP",
+  "description": "Elevator entrapment with injury",
+  "category": "rescue",
+  "severity": "high",
+  "alertable": true,
+  "upgrade": false,
+  "source": "p3 PA1"
+ },
+ {
+  "code": "PIC2",
+  "description": "Collision with injuries, ALS2",
+  "category": "rescue",
+  "severity": "high",
+  "alertable": true,
+  "upgrade": false,
+  "source": "p2 PA2"
+ },
+ {
+  "code": "PICEXB",
+  "description": "Collision, extrication needed, BLS",
+  "category": "rescue",
+  "severity": "high",
+  "alertable": true,
+  "upgrade": false,
+  "source": "p4 PIBWEX"
+ },
+ {
+  "code": "PICHM2",
+  "description": "Collision with hazmat, ALS2",
+  "category": "rescue",
+  "severity": "high",
+  "alertable": true,
+  "upgrade": false,
+  "source": "p2 PHM"
+ },
+ {
+  "code": "AIRALERT",
+  "description": "Aircraft alert",
+  "category": "rescue",
+  "severity": "normal",
+  "alertable": false,
+  "upgrade": false,
+  "source": "p3 PHM"
+ },
+ {
+  "code": "AIRMINRE",
+  "description": "Aircraft minor emergency",
+  "category": "rescue",
+  "severity": "normal",
+  "alertable": false,
+  "upgrade": false,
+  "source": "p3 PHM"
+ },
+ {
+  "code": "PIC1",
+  "description": "Collision with injuries, ALS1",
+  "category": "rescue",
+  "severity": "normal",
+  "alertable": false,
+  "upgrade": false,
+  "source": "p3 PA1"
+ },
+ {
+  "code": "PICB",
+  "description": "Collision with injuries, BLS",
+  "category": "rescue",
+  "severity": "normal",
+  "alertable": false,
+  "upgrade": false,
+  "source": "p5 PIB"
+ },
+ {
+  "code": "PICHM1",
+  "description": "Collision with hazmat, ALS1",
+  "category": "rescue",
+  "severity": "normal",
+  "alertable": false,
+  "upgrade": false,
+  "source": "p3 PHM"
+ },
+ {
+  "code": "PICHMB",
+  "description": "Collision with hazmat, BLS",
+  "category": "rescue",
+  "severity": "normal",
+  "alertable": false,
+  "upgrade": false,
+  "source": "p3 PHM"
+ },
+ {
+  "code": "TRAININV",
+  "description": "Train investigation",
+  "category": "rescue",
+  "severity": "normal",
+  "alertable": false,
+  "upgrade": false,
+  "source": "p4 TRM"
+ },
+ {
+  "code": "TRAININVR",
+  "description": "Train investigation (routine)",
+  "category": "rescue",
+  "severity": "normal",
+  "alertable": false,
+  "upgrade": false,
+  "source": "p5 TRM"
+ },
+ {
+  "code": "LOSTPERR",
+  "description": "Lost person (routine)",
+  "category": "rescue",
+  "severity": "low",
+  "alertable": false,
+  "upgrade": false,
+  "source": "p6 LOST"
+ },
+ {
+  "code": "ALLERGIC2",
+  "description": "Allergic reaction, ALS2",
+  "category": "ems",
+  "severity": "critical",
+  "alertable": true,
+  "upgrade": false,
+  "source": "p2 ALS2"
+ },
+ {
+  "code": "BURNADA2",
+  "description": "Burns, ALS2 with fire response",
+  "category": "ems",
+  "severity": "critical",
+  "alertable": true,
+  "upgrade": false,
+  "source": "p1 ADA"
+ },
+ {
+  "code": "BURNMPD2",
+  "description": "Burns, multiple patients",
+  "category": "ems",
+  "severity": "critical",
+  "alertable": true,
+  "upgrade": false,
+  "source": "p1 FDMULTP"
+ },
+ {
+  "code": "CHOKING2",
+  "description": "Choking, ALS2",
+  "category": "ems",
+  "severity": "critical",
+  "alertable": true,
+  "upgrade": false,
+  "source": "p2 ALS2"
+ },
+ {
+  "code": "CPR2",
+  "description": "Cardiac arrest",
+  "category": "ems",
+  "severity": "critical",
+  "alertable": true,
+  "upgrade": false,
+  "source": "p1 ALS2EMSDO"
+ },
+ {
+  "code": "CPRDROWN2",
+  "description": "Cardiac arrest, drowning",
+  "category": "ems",
+  "severity": "critical",
+  "alertable": true,
+  "upgrade": false,
+  "source": "sta03"
+ },
+ {
+  "code": "CPRHEMM2",
+  "description": "Cardiac arrest, hemorrhage",
+  "category": "ems",
+  "severity": "critical",
+  "alertable": true,
+  "upgrade": false,
+  "source": "p1 ALS2EMSDO"
+ },
+ {
+  "code": "CPRHM2",
+  "description": "Cardiac arrest, hazmat",
+  "category": "ems",
+  "severity": "critical",
+  "alertable": true,
+  "upgrade": false,
+  "source": "p1 HMEMSDO"
+ },
+ {
+  "code": "CPROD2",
+  "description": "Cardiac arrest, overdose",
+  "category": "ems",
+  "severity": "critical",
+  "alertable": true,
+  "upgrade": false,
+  "source": "p1 ALS2EMSDO"
+ },
+ {
+  "code": "CPRSHOT2",
+  "description": "Cardiac arrest, gunshot",
+  "category": "ems",
+  "severity": "critical",
+  "alertable": true,
+  "upgrade": false,
+  "source": "sta03"
+ },
+ {
+  "code": "CPRSTAB2",
+  "description": "Cardiac arrest, stabbing",
+  "category": "ems",
+  "severity": "critical",
+  "alertable": true,
+  "upgrade": false,
+  "source": "sta03"
+ },
+ {
+  "code": "CPRTRAUM2",
+  "description": "Cardiac arrest, trauma",
+  "category": "ems",
+  "severity": "critical",
+  "alertable": true,
+  "upgrade": false,
+  "source": "sta03"
+ },
+ {
+  "code": "DROWN2",
+  "description": "Drowning, ALS2",
+  "category": "ems",
+  "severity": "critical",
+  "alertable": true,
+  "upgrade": false,
+  "source": "p2 PA2"
+ },
+ {
+  "code": "DSASTRMCI",
+  "description": "Disaster, mass casualty",
+  "category": "ems",
+  "severity": "critical",
+  "alertable": true,
+  "upgrade": false,
+  "source": "p2 SA"
+ },
+ {
+  "code": "ELECTRO2",
+  "description": "Electrocution, ALS2",
+  "category": "ems",
+  "severity": "critical",
+  "alertable": true,
+  "upgrade": false,
+  "source": "p2 AL2D"
+ },
+ {
+  "code": "ELECTROM",
+  "description": "Electrocution, multiple patients",
+  "category": "ems",
+  "severity": "critical",
+  "alertable": true,
+  "upgrade": false,
+  "source": "p2 MLTP"
+ },
+ {
+  "code": "HEMM2",
+  "description": "Hemorrhage, ALS2",
+  "category": "ems",
+  "severity": "critical",
+  "alertable": true,
+  "upgrade": false,
+  "source": "p2 ALS2"
+ },
+ {
+  "code": "SHOOTA2",
+  "description": "Shooting, ALS2",
+  "category": "ems",
+  "severity": "critical",
+  "alertable": true,
+  "upgrade": false,
+  "source": "sta03"
+ },
+ {
+  "code": "SHOTPOL2",
+  "description": "Shooting, police on scene, ALS2",
+  "category": "ems",
+  "severity": "critical",
+  "alertable": true,
+  "upgrade": false,
+  "source": "p2 AL2D"
+ },
+ {
+  "code": "SHOTPOLM",
+  "description": "Shooting, police on scene, multiple patients",
+  "category": "ems",
+  "severity": "critical",
+  "alertable": true,
+  "upgrade": false,
+  "source": "p2 MLTP"
+ },
+ {
+  "code": "STAB2",
+  "description": "Stabbing, ALS2",
+  "category": "ems",
+  "severity": "critical",
+  "alertable": true,
+  "upgrade": false,
+  "source": "sta03"
+ },
+ {
+  "code": "STABPOL2",
+  "description": "Stabbing, police on scene, ALS2",
+  "category": "ems",
+  "severity": "critical",
+  "alertable": true,
+  "upgrade": false,
+  "source": "p2 AL2D"
+ },
+ {
+  "code": "STABPOLM",
+  "description": "Stabbing, police on scene, multiple patients",
+  "category": "ems",
+  "severity": "critical",
+  "alertable": true,
+  "upgrade": false,
+  "source": "p2 MLTP"
+ },
+ {
+  "code": "TRAUMPOL2",
+  "description": "Trauma, police on scene, ALS2",
+  "category": "ems",
+  "severity": "critical",
+  "alertable": true,
+  "upgrade": false,
+  "source": "p2 AL2D"
+ },
+ {
+  "code": "TRAUMPOLM",
+  "description": "Trauma, police on scene, multiple patients",
+  "category": "ems",
+  "severity": "critical",
+  "alertable": true,
+  "upgrade": false,
+  "source": "p2 MLTP"
+ },
+ {
+  "code": "UCODE",
+  "description": "Unconscious, possible code",
+  "category": "ems",
+  "severity": "critical",
+  "alertable": true,
+  "upgrade": false,
+  "source": "sta03"
+ },
+ {
+  "code": "UNCON2",
+  "description": "Unconscious, ALS2",
+  "category": "ems",
+  "severity": "critical",
+  "alertable": true,
+  "upgrade": false,
+  "source": "p2 ALS2"
+ },
+ {
+  "code": "ANMLBITE2",
+  "description": "Animal bite, ALS2",
+  "category": "ems",
+  "severity": "high",
+  "alertable": true,
+  "upgrade": false,
+  "source": "p2 AL2D"
+ },
+ {
+  "code": "ASSAULT2",
+  "description": "Assault, ALS2",
+  "category": "ems",
+  "severity": "high",
+  "alertable": true,
+  "upgrade": false,
+  "source": "p2 AL2D"
+ },
+ {
+  "code": "BURN2",
+  "description": "Burns, ALS2",
+  "category": "ems",
+  "severity": "high",
+  "alertable": true,
+  "upgrade": false,
+  "source": "p2 AL2D"
+ },
+ {
+  "code": "COLDM",
+  "description": "Cold exposure, multiple patients",
+  "category": "ems",
+  "severity": "high",
+  "alertable": true,
+  "upgrade": false,
+  "source": "p2 MLTP"
+ },
+ {
+  "code": "CP2",
+  "description": "Chest pain, ALS2",
+  "category": "ems",
+  "severity": "high",
+  "alertable": true,
+  "upgrade": false,
+  "source": "p2 ALS2"
+ },
+ {
+  "code": "DROWN1",
+  "description": "Drowning, ALS1",
+  "category": "ems",
+  "severity": "high",
+  "alertable": true,
+  "upgrade": false,
+  "source": "p3 AL1D"
+ },
+ {
+  "code": "ELECTRO1",
+  "description": "Electrocution, ALS1",
+  "category": "ems",
+  "severity": "high",
+  "alertable": true,
+  "upgrade": false,
+  "source": "p3 AL1D"
+ },
+ {
+  "code": "FALL2",
+  "description": "Fall, ALS2",
+  "category": "ems",
+  "severity": "high",
+  "alertable": true,
+  "upgrade": false,
+  "source": "p2 AL2D"
+ },
+ {
+  "code": "FALLPOL2",
+  "description": "Fall, police on scene, ALS2",
+  "category": "ems",
+  "severity": "high",
+  "alertable": true,
+  "upgrade": false,
+  "source": "p2 AL2D"
+ },
+ {
+  "code": "HEART2",
+  "description": "Heart problems, ALS2",
+  "category": "ems",
+  "severity": "high",
+  "alertable": true,
+  "upgrade": false,
+  "source": "p2 ALS2"
+ },
+ {
+  "code": "HEATM",
+  "description": "Heat exposure, multiple patients",
+  "category": "ems",
+  "severity": "high",
+  "alertable": true,
+  "upgrade": false,
+  "source": "p2 MLTP"
+ },
+ {
+  "code": "INJURED2",
+  "description": "Injured person, ALS2",
+  "category": "ems",
+  "severity": "high",
+  "alertable": true,
+  "upgrade": false,
+  "source": "p2 AL2D"
+ },
+ {
+  "code": "OD2",
+  "description": "Overdose, ALS2",
+  "category": "ems",
+  "severity": "high",
+  "alertable": true,
+  "upgrade": false,
+  "source": "p2 ALS2"
+ },
+ {
+  "code": "ODINT2",
+  "description": "Overdose, intentional, ALS2",
+  "category": "ems",
+  "severity": "high",
+  "alertable": true,
+  "upgrade": false,
+  "source": "p2 ALS2"
+ },
+ {
+  "code": "ODPOL2",
+  "description": "Overdose, police on scene, ALS2",
+  "category": "ems",
+  "severity": "high",
+  "alertable": true,
+  "upgrade": false,
+  "source": "p2 ALS2"
+ },
+ {
+  "code": "PICCYCLE1",
+  "description": "Cyclist struck, ALS1",
+  "category": "ems",
+  "severity": "high",
+  "alertable": true,
+  "upgrade": false,
+  "source": "p3 AL1D"
+ },
+ {
+  "code": "PICPED1",
+  "description": "Pedestrian struck, ALS1",
+  "category": "ems",
+  "severity": "high",
+  "alertable": true,
+  "upgrade": false,
+  "source": "p3 AL1D"
+ },
+ {
+  "code": "SEIZURE2",
+  "description": "Seizure, ALS2",
+  "category": "ems",
+  "severity": "high",
+  "alertable": true,
+  "upgrade": false,
+  "source": "p2 ALS2"
+ },
+ {
+  "code": "SHOOTA1",
+  "description": "Shooting",
+  "category": "ems",
+  "severity": "high",
+  "alertable": true,
+  "upgrade": false,
+  "source": "sta03"
+ },
+ {
+  "code": "SHOTPOL1",
+  "description": "Shooting, police on scene, ALS1",
+  "category": "ems",
+  "severity": "high",
+  "alertable": true,
+  "upgrade": false,
+  "source": "p3 AL1D"
+ },
+ {
+  "code": "STAB1",
+  "description": "Stabbing",
+  "category": "ems",
+  "severity": "high",
+  "alertable": true,
+  "upgrade": false,
+  "source": "sta03"
+ },
+ {
+  "code": "STABPOL1",
+  "description": "Stabbing, police on scene, ALS1",
+  "category": "ems",
+  "severity": "high",
+  "alertable": true,
+  "upgrade": false,
+  "source": "p3 AL1D"
+ },
+ {
+  "code": "TB2",
+  "description": "Trouble breathing, ALS2",
+  "category": "ems",
+  "severity": "high",
+  "alertable": true,
+  "upgrade": false,
+  "source": "p2 ALS2"
+ },
+ {
+  "code": "TBPOL2",
+  "description": "Trouble breathing, police on scene, ALS2",
+  "category": "ems",
+  "severity": "high",
+  "alertable": true,
+  "upgrade": false,
+  "source": "p2 ALS2"
+ },
+ {
+  "code": "TRAUMPOL1",
+  "description": "Trauma, police on scene, ALS1",
+  "category": "ems",
+  "severity": "high",
+  "alertable": true,
+  "upgrade": false,
+  "source": "p3 AL1D"
+ },
+ {
+  "code": "ABDPN1",
+  "description": "Abdominal pain, ALS1",
+  "category": "ems",
+  "severity": "normal",
+  "alertable": false,
+  "upgrade": false,
+  "source": "p3 ALS1"
+ },
+ {
+  "code": "ALLERGIC1",
+  "description": "Allergic reaction, ALS1",
+  "category": "ems",
+  "severity": "normal",
+  "alertable": false,
+  "upgrade": false,
+  "source": "p3 ALS1"
+ },
+ {
+  "code": "ANMLBITE1",
+  "description": "Animal bite, ALS1",
+  "category": "ems",
+  "severity": "normal",
+  "alertable": false,
+  "upgrade": false,
+  "source": "p3 AL1D"
+ },
+ {
+  "code": "ASSAULT1",
+  "description": "Assault, ALS1",
+  "category": "ems",
+  "severity": "normal",
+  "alertable": false,
+  "upgrade": false,
+  "source": "p3 AL1D"
+ },
+ {
+  "code": "ASSAULTM",
+  "description": "Assault, multiple patients",
+  "category": "ems",
+  "severity": "normal",
+  "alertable": false,
+  "upgrade": false,
+  "source": "p3 MLTP"
+ },
+ {
+  "code": "BACKPN1",
+  "description": "Back pain, ALS1",
+  "category": "ems",
+  "severity": "normal",
+  "alertable": false,
+  "upgrade": false,
+  "source": "p3 ALS1"
+ },
+ {
+  "code": "BURN1",
+  "description": "Burns, ALS1",
+  "category": "ems",
+  "severity": "normal",
+  "alertable": false,
+  "upgrade": false,
+  "source": "p3 AL1D"
+ },
+ {
+  "code": "BURNFEI1",
+  "description": "Burns, fire investigator, ALS1",
+  "category": "ems",
+  "severity": "normal",
+  "alertable": false,
+  "upgrade": false,
+  "source": "p3 FALS1FEI"
+ },
+ {
+  "code": "BURNFEIB",
+  "description": "Burns, fire investigator, BLS",
+  "category": "ems",
+  "severity": "normal",
+  "alertable": false,
+  "upgrade": false,
+  "source": "p5 FCFEI"
+ },
+ {
+  "code": "CHOKING1",
+  "description": "Choking, ALS1",
+  "category": "ems",
+  "severity": "normal",
+  "alertable": false,
+  "upgrade": false,
+  "source": "p3 ALS1"
+ },
+ {
+  "code": "COLD1",
+  "description": "Cold exposure, ALS1",
+  "category": "ems",
+  "severity": "normal",
+  "alertable": false,
+  "upgrade": false,
+  "source": "p3 ALS1"
+ },
+ {
+  "code": "CP1",
+  "description": "Chest pain, ALS1",
+  "category": "ems",
+  "severity": "normal",
+  "alertable": false,
+  "upgrade": false,
+  "source": "p3 ALS1"
+ },
+ {
+  "code": "DECLOC1",
+  "description": "Decreased level of consciousness, ALS1",
+  "category": "ems",
+  "severity": "normal",
+  "alertable": false,
+  "upgrade": false,
+  "source": "p3 ALS1"
+ },
+ {
+  "code": "DIABEPOL1",
+  "description": "Diabetic, police on scene, ALS1",
+  "category": "ems",
+  "severity": "normal",
+  "alertable": false,
+  "upgrade": false,
+  "source": "p3 AL1D"
+ },
+ {
+  "code": "DIABETIC1",
+  "description": "Diabetic emergency, ALS1",
+  "category": "ems",
+  "severity": "normal",
+  "alertable": false,
+  "upgrade": false,
+  "source": "p3 ALS1"
+ },
+ {
+  "code": "ELECHAZ1",
+  "description": "Electrical hazard, ALS1",
+  "category": "ems",
+  "severity": "normal",
+  "alertable": false,
+  "upgrade": false,
+  "source": "p3 AL1D"
+ },
+ {
+  "code": "ELEVTR1",
+  "description": "Elevator entrapment, ALS1",
+  "category": "ems",
+  "severity": "normal",
+  "alertable": false,
+  "upgrade": false,
+  "source": "p3 ALS1"
+ },
+ {
+  "code": "FALL1",
+  "description": "Fall, ALS1",
+  "category": "ems",
+  "severity": "normal",
+  "alertable": false,
+  "upgrade": false,
+  "source": "p3 ALS1"
+ },
+ {
+  "code": "FALLPOL1",
+  "description": "Fall, police on scene, ALS1",
+  "category": "ems",
+  "severity": "normal",
+  "alertable": false,
+  "upgrade": false,
+  "source": "p3 AL1D"
+ },
+ {
+  "code": "HEART1",
+  "description": "Heart problems, ALS1",
+  "category": "ems",
+  "severity": "normal",
+  "alertable": false,
+  "upgrade": false,
+  "source": "p3 ALS1"
+ },
+ {
+  "code": "HEAT1",
+  "description": "Heat exposure, ALS1",
+  "category": "ems",
+  "severity": "normal",
+  "alertable": false,
+  "upgrade": false,
+  "source": "p3 ALS1"
+ },
+ {
+  "code": "HEMM1",
+  "description": "Hemorrhage, ALS1",
+  "category": "ems",
+  "severity": "normal",
+  "alertable": false,
+  "upgrade": false,
+  "source": "p3 ALS1"
+ },
+ {
+  "code": "INJURED1",
+  "description": "Injured person, ALS1",
+  "category": "ems",
+  "severity": "normal",
+  "alertable": false,
+  "upgrade": false,
+  "source": "p3 ALS1"
+ },
+ {
+  "code": "INTRF1",
+  "description": "Interfacility transfer, ALS1",
+  "category": "ems",
+  "severity": "normal",
+  "alertable": false,
+  "upgrade": false,
+  "source": "p3 ALS1NFR"
+ },
+ {
+  "code": "INTRF2",
+  "description": "Interfacility transfer, ALS2",
+  "category": "ems",
+  "severity": "normal",
+  "alertable": false,
+  "upgrade": false,
+  "source": "p2 ALS2"
+ },
+ {
+  "code": "INTRFMP1",
+  "description": "Interfacility transfer, manpower, ALS1",
+  "category": "ems",
+  "severity": "normal",
+  "alertable": false,
+  "upgrade": false,
+  "source": "p3 ALS1"
+ },
+ {
+  "code": "MO1",
+  "description": "Medical, unknown problem, ALS1",
+  "category": "ems",
+  "severity": "normal",
+  "alertable": false,
+  "upgrade": false,
+  "source": "p3 ALS1"
+ },
+ {
+  "code": "MOPOL1",
+  "description": "Medical, police on scene, ALS1",
+  "category": "ems",
+  "severity": "normal",
+  "alertable": false,
+  "upgrade": false,
+  "source": "p3 ALS1"
+ },
+ {
+  "code": "OB1",
+  "description": "Obstetric emergency, ALS1",
+  "category": "ems",
+  "severity": "normal",
+  "alertable": false,
+  "upgrade": false,
+  "source": "p3 ALS1"
+ },
+ {
+  "code": "OD1",
+  "description": "Overdose, ALS1",
+  "category": "ems",
+  "severity": "normal",
+  "alertable": false,
+  "upgrade": false,
+  "source": "p3 ALS1"
+ },
+ {
+  "code": "ODINT1",
+  "description": "Overdose, intentional, ALS1",
+  "category": "ems",
+  "severity": "normal",
+  "alertable": false,
+  "upgrade": false,
+  "source": "p3 ALS1"
+ },
+ {
+  "code": "ODPOL1",
+  "description": "Overdose, police on scene, ALS1",
+  "category": "ems",
+  "severity": "normal",
+  "alertable": false,
+  "upgrade": false,
+  "source": "p3 ALS1"
+ },
+ {
+  "code": "PANALS1",
+  "description": "Psychiatric / behavioral, ALS1",
+  "category": "ems",
+  "severity": "normal",
+  "alertable": false,
+  "upgrade": false,
+  "source": "p3 ALS1"
+ },
+ {
+  "code": "PANALS2",
+  "description": "Psychiatric / behavioral, ALS2",
+  "category": "ems",
+  "severity": "normal",
+  "alertable": false,
+  "upgrade": false,
+  "source": "p2 ALS2"
+ },
+ {
+  "code": "PANONLYALS",
+  "description": "Psychiatric, single ALS evaluation",
+  "category": "ems",
+  "severity": "normal",
+  "alertable": false,
+  "upgrade": false,
+  "source": "p3 ALS1SR"
+ },
+ {
+  "code": "SEIZURE1",
+  "description": "Seizure, ALS1",
+  "category": "ems",
+  "severity": "normal",
+  "alertable": false,
+  "upgrade": false,
+  "source": "p3 ALS1"
+ },
+ {
+  "code": "SICK1",
+  "description": "Sick person, ALS1",
+  "category": "ems",
+  "severity": "normal",
+  "alertable": false,
+  "upgrade": false,
+  "source": "p3 ALS1"
+ },
+ {
+  "code": "STROKE1",
+  "description": "Stroke, ALS1",
+  "category": "ems",
+  "severity": "normal",
+  "alertable": false,
+  "upgrade": false,
+  "source": "p3 ALS1"
+ },
+ {
+  "code": "TB1",
+  "description": "Trouble breathing, ALS1",
+  "category": "ems",
+  "severity": "normal",
+  "alertable": false,
+  "upgrade": false,
+  "source": "p3 ALS1"
+ },
+ {
+  "code": "TRNSFRM1",
+  "description": "Transformer fire, ALS1",
+  "category": "ems",
+  "severity": "normal",
+  "alertable": false,
+  "upgrade": false,
+  "source": "p3 AL1D"
+ },
+ {
+  "code": "WIRES1",
+  "description": "Wires down, ALS1",
+  "category": "ems",
+  "severity": "normal",
+  "alertable": false,
+  "upgrade": false,
+  "source": "p3 AL1D"
+ },
+ {
+  "code": "ABDPNB",
+  "description": "Abdominal pain, BLS",
+  "category": "ems",
+  "severity": "low",
+  "alertable": false,
+  "upgrade": false,
+  "source": "p5 BLSU9"
+ },
+ {
+  "code": "ALLERGICB",
+  "description": "Allergic reaction, BLS",
+  "category": "ems",
+  "severity": "low",
+  "alertable": false,
+  "upgrade": false,
+  "source": "p5 BLSU9"
+ },
+ {
+  "code": "ALRMAMA",
+  "description": "Automatic medical alarm",
+  "category": "ems",
+  "severity": "low",
+  "alertable": false,
+  "upgrade": false,
+  "source": "p5 BLSM"
+ },
+ {
+  "code": "ANMLBITEB",
+  "description": "Animal bite, BLS",
+  "category": "ems",
+  "severity": "low",
+  "alertable": false,
+  "upgrade": false,
+  "source": "p5 BLSU9"
+ },
+ {
+  "code": "ASSAULTB",
+  "description": "Assault, BLS",
+  "category": "ems",
+  "severity": "low",
+  "alertable": false,
+  "upgrade": false,
+  "source": "p5 BLSU9"
+ },
+ {
+  "code": "ASSAULTR",
+  "description": "Assault, routine",
+  "category": "ems",
+  "severity": "low",
+  "alertable": false,
+  "upgrade": false,
+  "source": "p5 BLSU9"
+ },
+ {
+  "code": "BURNB",
+  "description": "Burns, BLS",
+  "category": "ems",
+  "severity": "low",
+  "alertable": false,
+  "upgrade": false,
+  "source": "p5 BLSU9"
+ },
+ {
+  "code": "CHOKINGB",
+  "description": "Choking, BLS",
+  "category": "ems",
+  "severity": "low",
+  "alertable": false,
+  "upgrade": false,
+  "source": "p5 BLSU9"
+ },
+ {
+  "code": "COLDB",
+  "description": "Cold exposure, BLS",
+  "category": "ems",
+  "severity": "low",
+  "alertable": false,
+  "upgrade": false,
+  "source": "p5 BLSU9"
+ },
+ {
+  "code": "DROWNB",
+  "description": "Drowning, BLS",
+  "category": "ems",
+  "severity": "low",
+  "alertable": false,
+  "upgrade": false,
+  "source": "p5 BLSU9"
+ },
+ {
+  "code": "FALLB",
+  "description": "Fall, BLS",
+  "category": "ems",
+  "severity": "low",
+  "alertable": false,
+  "upgrade": false,
+  "source": "p5 BLSU9"
+ },
+ {
+  "code": "FALLPOLB",
+  "description": "Fall, police on scene, BLS",
+  "category": "ems",
+  "severity": "low",
+  "alertable": false,
+  "upgrade": false,
+  "source": "p5 BLSU9"
+ },
+ {
+  "code": "HEATB",
+  "description": "Heat exposure, BLS",
+  "category": "ems",
+  "severity": "low",
+  "alertable": false,
+  "upgrade": false,
+  "source": "p5 BLSU9"
+ },
+ {
+  "code": "HEMMB",
+  "description": "Hemorrhage, BLS",
+  "category": "ems",
+  "severity": "low",
+  "alertable": false,
+  "upgrade": false,
+  "source": "p5 BLSU9"
+ },
+ {
+  "code": "INJURDMPB",
+  "description": "Injured person, manpower, BLS",
+  "category": "ems",
+  "severity": "low",
+  "alertable": false,
+  "upgrade": false,
+  "source": "p5 BLSM"
+ },
+ {
+  "code": "INJUREDB",
+  "description": "Injured person, BLS",
+  "category": "ems",
+  "severity": "low",
+  "alertable": false,
+  "upgrade": false,
+  "source": "p5 BLSU9"
+ },
+ {
+  "code": "INJUREDR",
+  "description": "Injured person, routine",
+  "category": "ems",
+  "severity": "low",
+  "alertable": false,
+  "upgrade": false,
+  "source": "p6 BLSR"
+ },
+ {
+  "code": "INTRFB",
+  "description": "Interfacility transfer, BLS",
+  "category": "ems",
+  "severity": "low",
+  "alertable": false,
+  "upgrade": false,
+  "source": "p5 BLSNFR"
+ },
+ {
+  "code": "INTRFMPB",
+  "description": "Interfacility transfer, manpower, BLS",
+  "category": "ems",
+  "severity": "low",
+  "alertable": false,
+  "upgrade": false,
+  "source": "p5 BLSU9"
+ },
+ {
+  "code": "INTRFR",
+  "description": "Interfacility transfer, routine",
+  "category": "ems",
+  "severity": "low",
+  "alertable": false,
+  "upgrade": false,
+  "source": "p5 BLSNFR"
+ },
+ {
+  "code": "MOB",
+  "description": "Medical, unknown problem, BLS",
+  "category": "ems",
+  "severity": "low",
+  "alertable": false,
+  "upgrade": false,
+  "source": "p5 BLSU9"
+ },
+ {
+  "code": "MOPOLB",
+  "description": "Medical, police on scene, BLS",
+  "category": "ems",
+  "severity": "low",
+  "alertable": false,
+  "upgrade": false,
+  "source": "p5 BLSU9"
+ },
+ {
+  "code": "MOR",
+  "description": "Medical, unknown problem, routine",
+  "category": "ems",
+  "severity": "low",
+  "alertable": false,
+  "upgrade": false,
+  "source": "p6 BLSR"
+ },
+ {
+  "code": "OBB",
+  "description": "Obstetric emergency, BLS",
+  "category": "ems",
+  "severity": "low",
+  "alertable": false,
+  "upgrade": false,
+  "source": "p5 BLSU9"
+ },
+ {
+  "code": "ODB",
+  "description": "Overdose, BLS",
+  "category": "ems",
+  "severity": "low",
+  "alertable": false,
+  "upgrade": false,
+  "source": "p5 BLSU9"
+ },
+ {
+  "code": "ODINTB",
+  "description": "Overdose, intentional, BLS",
+  "category": "ems",
+  "severity": "low",
+  "alertable": false,
+  "upgrade": false,
+  "source": "p5 BLSU9"
+ },
+ {
+  "code": "ODPOLB",
+  "description": "Overdose, police on scene, BLS",
+  "category": "ems",
+  "severity": "low",
+  "alertable": false,
+  "upgrade": false,
+  "source": "p5 BLSU9"
+ },
+ {
+  "code": "ONEDOWNB",
+  "description": "Person down, BLS",
+  "category": "ems",
+  "severity": "low",
+  "alertable": false,
+  "upgrade": false,
+  "source": "p5 BLSU9"
+ },
+ {
+  "code": "ONEDWN32B",
+  "description": "Person down, BLS (32D)",
+  "category": "ems",
+  "severity": "low",
+  "alertable": false,
+  "upgrade": false,
+  "source": "p5 BLS32D"
+ },
+ {
+  "code": "PANBLSR",
+  "description": "Psychiatric / behavioral, BLS (routine)",
+  "category": "ems",
+  "severity": "low",
+  "alertable": false,
+  "upgrade": false,
+  "source": "p6 BLSR"
+ },
+ {
+  "code": "PANMIHR",
+  "description": "Mental health, routine",
+  "category": "ems",
+  "severity": "low",
+  "alertable": false,
+  "upgrade": false,
+  "source": "p7 BLSR"
+ },
+ {
+  "code": "SEIZUREB",
+  "description": "Seizure, BLS",
+  "category": "ems",
+  "severity": "low",
+  "alertable": false,
+  "upgrade": false,
+  "source": "p5 BLSU9"
+ },
+ {
+  "code": "SHOTPOLB",
+  "description": "Shooting, police on scene, BLS",
+  "category": "ems",
+  "severity": "low",
+  "alertable": false,
+  "upgrade": false,
+  "source": "p5 BLSU9"
+ },
+ {
+  "code": "SICKB",
+  "description": "Sick person, BLS",
+  "category": "ems",
+  "severity": "low",
+  "alertable": false,
+  "upgrade": false,
+  "source": "p5 BLSU9"
+ },
+ {
+  "code": "SICKR",
+  "description": "Sick person, routine",
+  "category": "ems",
+  "severity": "low",
+  "alertable": false,
+  "upgrade": false,
+  "source": "p6 BLSR"
+ },
+ {
+  "code": "STABPOLB",
+  "description": "Stabbing, police on scene, BLS",
+  "category": "ems",
+  "severity": "low",
+  "alertable": false,
+  "upgrade": false,
+  "source": "p5 BLSU9"
+ },
+ {
+  "code": "STROKEB",
+  "description": "Stroke, BLS",
+  "category": "ems",
+  "severity": "low",
+  "alertable": false,
+  "upgrade": false,
+  "source": "p5 BLSU9"
+ },
+ {
+  "code": "TBB",
+  "description": "Trouble breathing, BLS",
+  "category": "ems",
+  "severity": "low",
+  "alertable": false,
+  "upgrade": false,
+  "source": "p4 BLSU9"
+ },
+ {
+  "code": "TRAUMPOLB",
+  "description": "Trauma, police on scene, BLS",
+  "category": "ems",
+  "severity": "low",
+  "alertable": false,
+  "upgrade": false,
+  "source": "p5 BLSU9"
+ },
+ {
+  "code": "UNEMER",
+  "description": "Unknown emergency",
+  "category": "ems",
+  "severity": "low",
+  "alertable": false,
+  "upgrade": false,
+  "source": "p4 BLSM"
+ },
+ {
+  "code": "GASMAJOR",
+  "description": "Major natural gas leak",
+  "category": "hazmat",
+  "severity": "critical",
+  "alertable": true,
+  "upgrade": false,
+  "source": "p2 GASFULL"
+ },
+ {
+  "code": "TANKLG",
+  "description": "Large tank fire",
+  "category": "hazmat",
+  "severity": "critical",
+  "alertable": true,
+  "upgrade": false,
+  "source": "p2 GASFULL"
+ },
+ {
+  "code": "ALRMCOM",
+  "description": "Carbon monoxide alarm, multiple patients",
+  "category": "hazmat",
+  "severity": "high",
+  "alertable": true,
+  "upgrade": false,
+  "source": "p3 FDMULTP"
+ },
+ {
+  "code": "ELECODRM",
+  "description": "Electrical odor, multiple patients",
+  "category": "hazmat",
+  "severity": "high",
+  "alertable": true,
+  "upgrade": false,
+  "source": "p3 FDMULTP"
+ },
+ {
+  "code": "FUELODORM",
+  "description": "Fuel odor, multiple patients",
+  "category": "hazmat",
+  "severity": "high",
+  "alertable": true,
+  "upgrade": false,
+  "source": "p3 FDMULTP"
+ },
+ {
+  "code": "GASLEAKM",
+  "description": "Natural gas leak, multiple patients",
+  "category": "hazmat",
+  "severity": "high",
+  "alertable": true,
+  "upgrade": false,
+  "source": "p3 FDMULTP"
+ },
+ {
+  "code": "INHALEM",
+  "description": "Inhalation injury, multiple patients",
+  "category": "hazmat",
+  "severity": "high",
+  "alertable": true,
+  "upgrade": false,
+  "source": "p2 HMADMPD"
+ },
+ {
+  "code": "UNKODRM",
+  "description": "Unknown odor, multiple patients",
+  "category": "hazmat",
+  "severity": "high",
+  "alertable": true,
+  "upgrade": false,
+  "source": "p3 FDMULTP"
+ },
+ {
+  "code": "BOMBT",
+  "description": "Bomb threat",
+  "category": "hazmat",
+  "severity": "normal",
+  "alertable": false,
+  "upgrade": false,
+  "source": "p3 EX"
+ },
+ {
+  "code": "ELECODR",
+  "description": "Electrical odor",
+  "category": "hazmat",
+  "severity": "normal",
+  "alertable": false,
+  "upgrade": false,
+  "source": "p4 FE"
+ },
+ {
+  "code": "ELECODRB",
+  "description": "Electrical odor, BLS",
+  "category": "hazmat",
+  "severity": "normal",
+  "alertable": false,
+  "upgrade": false,
+  "source": "p4 FF"
+ },
+ {
+  "code": "ELECODRR",
+  "description": "Electrical odor, routine",
+  "category": "hazmat",
+  "severity": "normal",
+  "alertable": false,
+  "upgrade": false,
+  "source": "p5 SE"
+ },
+ {
+  "code": "FUELODORB",
+  "description": "Fuel odor, BLS",
+  "category": "hazmat",
+  "severity": "normal",
+  "alertable": false,
+  "upgrade": false,
+  "source": "p5 FF"
+ },
+ {
+  "code": "FUELODORI",
+  "description": "Fuel odor, inside",
+  "category": "hazmat",
+  "severity": "normal",
+  "alertable": false,
+  "upgrade": false,
+  "source": "p4 FE"
+ },
+ {
+  "code": "FUELODORO",
+  "description": "Fuel odor, outside",
+  "category": "hazmat",
+  "severity": "normal",
+  "alertable": false,
+  "upgrade": false,
+  "source": "p5 SE"
+ },
+ {
+  "code": "FUELSPIL",
+  "description": "Fuel spill",
+  "category": "hazmat",
+  "severity": "normal",
+  "alertable": false,
+  "upgrade": false,
+  "source": "p5 SE"
+ },
+ {
+  "code": "FUELSPILB",
+  "description": "Fuel spill, BLS",
+  "category": "hazmat",
+  "severity": "normal",
+  "alertable": false,
+  "upgrade": false,
+  "source": "p5 FC"
+ },
+ {
+  "code": "FUELSPILM",
+  "description": "Fuel spill, multiple patients",
+  "category": "hazmat",
+  "severity": "normal",
+  "alertable": false,
+  "upgrade": false,
+  "source": "p4 FG"
+ },
+ {
+  "code": "FUELSPLH",
+  "description": "Fuel spill, hazmat",
+  "category": "hazmat",
+  "severity": "normal",
+  "alertable": false,
+  "upgrade": false,
+  "source": "p4 HMLOCAL"
+ },
+ {
+  "code": "FUELSPLLG",
+  "description": "Fuel spill, large",
+  "category": "hazmat",
+  "severity": "normal",
+  "alertable": false,
+  "upgrade": false,
+  "source": "p3 HMADAPT"
+ },
+ {
+  "code": "GASLEAK",
+  "description": "Natural gas leak",
+  "category": "hazmat",
+  "severity": "normal",
+  "alertable": false,
+  "upgrade": false,
+  "source": "p5 FE"
+ },
+ {
+  "code": "GASLEAKB",
+  "description": "Natural gas leak, BLS",
+  "category": "hazmat",
+  "severity": "normal",
+  "alertable": false,
+  "upgrade": false,
+  "source": "p5 FG"
+ },
+ {
+  "code": "GASLEAKO",
+  "description": "Natural gas leak, outside",
+  "category": "hazmat",
+  "severity": "normal",
+  "alertable": false,
+  "upgrade": false,
+  "source": "p5 SE"
+ },
+ {
+  "code": "GASLEAKOB",
+  "description": "Natural gas leak, outside, BLS",
+  "category": "hazmat",
+  "severity": "normal",
+  "alertable": false,
+  "upgrade": false,
+  "source": "p5 FC"
+ },
+ {
+  "code": "GASLEAKOM",
+  "description": "Natural gas leak, outside, multiple patients",
+  "category": "hazmat",
+  "severity": "normal",
+  "alertable": false,
+  "upgrade": false,
+  "source": "p3 FX"
+ },
+ {
+  "code": "GASODOR",
+  "description": "Natural gas odor",
+  "category": "hazmat",
+  "severity": "normal",
+  "alertable": false,
+  "upgrade": false,
+  "source": "p5 SE"
+ },
+ {
+  "code": "GASODORB",
+  "description": "Natural gas odor, BLS",
+  "category": "hazmat",
+  "severity": "normal",
+  "alertable": false,
+  "upgrade": false,
+  "source": "p5 FC"
+ },
+ {
+  "code": "GASODORI",
+  "description": "Natural gas odor, inside",
+  "category": "hazmat",
+  "severity": "normal",
+  "alertable": false,
+  "upgrade": false,
+  "source": "p5 FC"
+ },
+ {
+  "code": "GASODORM",
+  "description": "Natural gas odor, multiple patients",
+  "category": "hazmat",
+  "severity": "normal",
+  "alertable": false,
+  "upgrade": false,
+  "source": "p3 FX"
+ },
+ {
+  "code": "HAZE",
+  "description": "Haze / smoke in the area",
+  "category": "hazmat",
+  "severity": "normal",
+  "alertable": false,
+  "upgrade": false,
+  "source": "p4 FE"
+ },
+ {
+  "code": "HMINC",
+  "description": "Hazmat incident",
+  "category": "hazmat",
+  "severity": "normal",
+  "alertable": false,
+  "upgrade": false,
+  "source": "p3 HMADAPT"
+ },
+ {
+  "code": "HMINCCNMP",
+  "description": "Hazmat incident, contained, multiple patients",
+  "category": "hazmat",
+  "severity": "normal",
+  "alertable": false,
+  "upgrade": false,
+  "source": "p4 HMADMPD"
+ },
+ {
+  "code": "HMINCCNTD",
+  "description": "Hazmat incident, contained",
+  "category": "hazmat",
+  "severity": "normal",
+  "alertable": false,
+  "upgrade": false,
+  "source": "p4 HMADAPT"
+ },
+ {
+  "code": "HMINCMPD",
+  "description": "Hazmat incident, multiple patients",
+  "category": "hazmat",
+  "severity": "normal",
+  "alertable": false,
+  "upgrade": false,
+  "source": "p3 HMADMPD"
+ },
+ {
+  "code": "HMINV",
+  "description": "Hazmat investigation",
+  "category": "hazmat",
+  "severity": "normal",
+  "alertable": false,
+  "upgrade": false,
+  "source": "p5 HMINVEST"
+ },
+ {
+  "code": "HMINVEST",
+  "description": "Hazmat investigation",
+  "category": "hazmat",
+  "severity": "normal",
+  "alertable": false,
+  "upgrade": false,
+  "source": "p4 HMADAPT"
+ },
+ {
+  "code": "HMSPILL",
+  "description": "Hazmat spill",
+  "category": "hazmat",
+  "severity": "normal",
+  "alertable": false,
+  "upgrade": false,
+  "source": "p4 HMADAPT"
+ },
+ {
+  "code": "HMSPILS",
+  "description": "Hazmat spill, small",
+  "category": "hazmat",
+  "severity": "normal",
+  "alertable": false,
+  "upgrade": false,
+  "source": "p5 HMINVEST"
+ },
+ {
+  "code": "HMSPLS",
+  "description": "Hazmat spill, small",
+  "category": "hazmat",
+  "severity": "normal",
+  "alertable": false,
+  "upgrade": false,
+  "source": "p5 HMLOCAL"
+ },
+ {
+  "code": "INHALE1",
+  "description": "Inhalation injury, ALS1",
+  "category": "hazmat",
+  "severity": "normal",
+  "alertable": false,
+  "upgrade": false,
+  "source": "p3 HMADAPT"
+ },
+ {
+  "code": "INHALEB",
+  "description": "Inhalation injury, BLS",
+  "category": "hazmat",
+  "severity": "normal",
+  "alertable": false,
+  "upgrade": false,
+  "source": "p4 HMADAPT"
+ },
+ {
+  "code": "INVESTEXH",
+  "description": "Investigation, explosion, hazmat",
+  "category": "hazmat",
+  "severity": "normal",
+  "alertable": false,
+  "upgrade": false,
+  "source": "p4 HMADAMPFEI"
+ },
+ {
+  "code": "INVESTEXP",
+  "description": "Investigation, explosion",
+  "category": "hazmat",
+  "severity": "normal",
+  "alertable": false,
+  "upgrade": false,
+  "source": "p5 FCFEI"
+ },
+ {
+  "code": "OUTFIRH",
+  "description": "Outside fire, hazmat",
+  "category": "hazmat",
+  "severity": "normal",
+  "alertable": false,
+  "upgrade": false,
+  "source": "p5 HMADAPT"
+ },
+ {
+  "code": "SHORTH",
+  "description": "Electrical short, hazmat",
+  "category": "hazmat",
+  "severity": "normal",
+  "alertable": false,
+  "upgrade": false,
+  "source": "p4 HMADAPT"
+ },
+ {
+  "code": "SPKGINV",
+  "description": "Suspicious package investigation",
+  "category": "hazmat",
+  "severity": "normal",
+  "alertable": false,
+  "upgrade": false,
+  "source": "p4 HMLOCALM"
+ },
+ {
+  "code": "TANKBLDG",
+  "description": "Tank fire near building",
+  "category": "hazmat",
+  "severity": "normal",
+  "alertable": false,
+  "upgrade": false,
+  "source": "p4 FE"
+ },
+ {
+  "code": "TANKS",
+  "description": "Tank fire, small",
+  "category": "hazmat",
+  "severity": "normal",
+  "alertable": false,
+  "upgrade": false,
+  "source": "p5 SE"
+ },
+ {
+  "code": "TANKSMB",
+  "description": "Tank fire, small, BLS",
+  "category": "hazmat",
+  "severity": "normal",
+  "alertable": false,
+  "upgrade": false,
+  "source": "p4 FC"
+ },
+ {
+  "code": "TANKSMH",
+  "description": "Tank fire, small, hazmat",
+  "category": "hazmat",
+  "severity": "normal",
+  "alertable": false,
+  "upgrade": false,
+  "source": "p3 HMADAPT"
+ },
+ {
+  "code": "TANKSMIB",
+  "description": "Tank fire, small, inside, BLS",
+  "category": "hazmat",
+  "severity": "normal",
+  "alertable": false,
+  "upgrade": false,
+  "source": "p4 FF"
+ },
+ {
+  "code": "TANKSMM",
+  "description": "Tank fire, small, multiple patients",
+  "category": "hazmat",
+  "severity": "normal",
+  "alertable": false,
+  "upgrade": false,
+  "source": "p3 FX"
+ },
+ {
+  "code": "TNKFROUT",
+  "description": "Tank fire out",
+  "category": "hazmat",
+  "severity": "normal",
+  "alertable": false,
+  "upgrade": false,
+  "source": "p5 SE"
+ },
+ {
+  "code": "TNKFROUTB",
+  "description": "Tank fire out, BLS",
+  "category": "hazmat",
+  "severity": "normal",
+  "alertable": false,
+  "upgrade": false,
+  "source": "p4 FC"
+ },
+ {
+  "code": "TNKFROUTM",
+  "description": "Tank fire out, multiple patients",
+  "category": "hazmat",
+  "severity": "normal",
+  "alertable": false,
+  "upgrade": false,
+  "source": "p3 FX"
+ },
+ {
+  "code": "UNKODORR",
+  "description": "Unknown odor, routine",
+  "category": "hazmat",
+  "severity": "normal",
+  "alertable": false,
+  "upgrade": false,
+  "source": "p5 SE"
+ },
+ {
+  "code": "UNKODRB",
+  "description": "Unknown odor, BLS",
+  "category": "hazmat",
+  "severity": "normal",
+  "alertable": false,
+  "upgrade": false,
+  "source": "p4 FG"
+ },
+ {
+  "code": "ALRMCO",
+  "description": "Carbon monoxide alarm",
+  "category": "hazmat",
+  "severity": "low",
+  "alertable": false,
+  "upgrade": false,
+  "source": "p7 SCT"
+ },
+ {
+  "code": "FUELSPILR",
+  "description": "Fuel spill, routine",
+  "category": "hazmat",
+  "severity": "low",
+  "alertable": false,
+  "upgrade": false,
+  "source": "p6 SE"
+ },
+ {
+  "code": "HMINVSTR",
+  "description": "Hazmat investigation (routine)",
+  "category": "hazmat",
+  "severity": "low",
+  "alertable": false,
+  "upgrade": false,
+  "source": "p6 HMINVEST"
+ },
+ {
+  "code": "ORDNCNE",
+  "description": "Ordnance found",
+  "category": "hazmat",
+  "severity": "low",
+  "alertable": false,
+  "upgrade": false,
+  "source": "p6 EX"
+ },
+ {
+  "code": "SUSPKG",
+  "description": "Suspicious package",
+  "category": "hazmat",
+  "severity": "low",
+  "alertable": false,
+  "upgrade": false,
+  "source": "p6 EX"
+ },
+ {
+  "code": "ELECDSTRM",
+  "description": "Electrical distribution problem, multiple patients",
+  "category": "service",
+  "severity": "high",
+  "alertable": true,
+  "upgrade": false,
+  "source": "p3 FDMULTP"
+ },
+ {
+  "code": "ELECHAZM",
+  "description": "Electrical hazard, multiple patients",
+  "category": "service",
+  "severity": "high",
+  "alertable": true,
+  "upgrade": false,
+  "source": "p3 FDMULTP"
+ },
+ {
+  "code": "ELECSOLM",
+  "description": "Electrical, solar, multiple patients",
+  "category": "service",
+  "severity": "high",
+  "alertable": true,
+  "upgrade": false,
+  "source": "p3 FDMULTP"
+ },
+ {
+  "code": "ELECUNDM",
+  "description": "Electrical underground, multiple patients",
+  "category": "service",
+  "severity": "high",
+  "alertable": true,
+  "upgrade": false,
+  "source": "p3 FDMULTP"
+ },
+ {
+  "code": "LIGHNINGM",
+  "description": "Lightning strike, multiple patients",
+  "category": "service",
+  "severity": "high",
+  "alertable": true,
+  "upgrade": false,
+  "source": "p3 FDMULTP"
+ },
+ {
+  "code": "TRNSFRMM",
+  "description": "Transformer fire, multiple patients",
+  "category": "service",
+  "severity": "high",
+  "alertable": true,
+  "upgrade": false,
+  "source": "p3 FDMULTP"
+ },
+ {
+  "code": "WIRESM",
+  "description": "Wires down, multiple patients",
+  "category": "service",
+  "severity": "high",
+  "alertable": true,
+  "upgrade": false,
+  "source": "p3 FDMULTP"
+ },
+ {
+  "code": "AIRINVSTR",
+  "description": "Aircraft investigation (routine)",
+  "category": "service",
+  "severity": "normal",
+  "alertable": false,
+  "upgrade": false,
+  "source": "p5 SE"
+ },
+ {
+  "code": "ALRMAFAR",
+  "description": "Automatic fire alarm (routine)",
+  "category": "service",
+  "severity": "normal",
+  "alertable": false,
+  "upgrade": false,
+  "source": "p5 FD1"
+ },
+ {
+  "code": "CTRLBRN",
+  "description": "Controlled burn",
+  "category": "service",
+  "severity": "normal",
+  "alertable": false,
+  "upgrade": false,
+  "source": "p5 SE"
+ },
+ {
+  "code": "CTRLBRNB",
+  "description": "Controlled burn, BLS",
+  "category": "service",
+  "severity": "normal",
+  "alertable": false,
+  "upgrade": false,
+  "source": "p4 FC"
+ },
+ {
+  "code": "CTRLBRNM",
+  "description": "Controlled burn, multiple patients",
+  "category": "service",
+  "severity": "normal",
+  "alertable": false,
+  "upgrade": false,
+  "source": "p3 FX"
+ },
+ {
+  "code": "DSASTRINC",
+  "description": "Disaster incident",
+  "category": "service",
+  "severity": "normal",
+  "alertable": false,
+  "upgrade": false,
+  "source": "p5 SA"
+ },
+ {
+  "code": "DSASTRMED",
+  "description": "Disaster, medical",
+  "category": "service",
+  "severity": "normal",
+  "alertable": false,
+  "upgrade": false,
+  "source": "p3 SA"
+ },
+ {
+  "code": "DSASTRUTL",
+  "description": "Disaster, utility",
+  "category": "service",
+  "severity": "normal",
+  "alertable": false,
+  "upgrade": false,
+  "source": "p5 SA"
+ },
+ {
+  "code": "ELECDSTR",
+  "description": "Electrical distribution problem",
+  "category": "service",
+  "severity": "normal",
+  "alertable": false,
+  "upgrade": false,
+  "source": "p4 FE"
+ },
+ {
+  "code": "ELECDSTRB",
+  "description": "Electrical distribution problem, BLS",
+  "category": "service",
+  "severity": "normal",
+  "alertable": false,
+  "upgrade": false,
+  "source": "p4 FF"
+ },
+ {
+  "code": "ELECHAZ",
+  "description": "Electrical hazard",
+  "category": "service",
+  "severity": "normal",
+  "alertable": false,
+  "upgrade": false,
+  "source": "p4 FE"
+ },
+ {
+  "code": "ELECHAZB",
+  "description": "Electrical hazard, BLS",
+  "category": "service",
+  "severity": "normal",
+  "alertable": false,
+  "upgrade": false,
+  "source": "p4 FF"
+ },
+ {
+  "code": "ELECHAZSE",
+  "description": "Electrical hazard, single engine",
+  "category": "service",
+  "severity": "normal",
+  "alertable": false,
+  "upgrade": false,
+  "source": "p5 FA"
+ },
+ {
+  "code": "ELECHZSEB",
+  "description": "Electrical hazard, single engine, BLS",
+  "category": "service",
+  "severity": "normal",
+  "alertable": false,
+  "upgrade": false,
+  "source": "p4 FC"
+ },
+ {
+  "code": "ELECSOL",
+  "description": "Electrical, solar",
+  "category": "service",
+  "severity": "normal",
+  "alertable": false,
+  "upgrade": false,
+  "source": "p4 FE"
+ },
+ {
+  "code": "ELECSOLB",
+  "description": "Electrical, solar, BLS",
+  "category": "service",
+  "severity": "normal",
+  "alertable": false,
+  "upgrade": false,
+  "source": "p3 FF"
+ },
+ {
+  "code": "ELECUNDR",
+  "description": "Electrical underground, routine",
+  "category": "service",
+  "severity": "normal",
+  "alertable": false,
+  "upgrade": false,
+  "source": "p4 FE"
+ },
+ {
+  "code": "ELECUNDRB",
+  "description": "Electrical underground, routine, BLS",
+  "category": "service",
+  "severity": "normal",
+  "alertable": false,
+  "upgrade": false,
+  "source": "p3 FF"
+ },
+ {
+  "code": "ELEVSTFA",
+  "description": "Elevator entrapment with fire alarm",
+  "category": "service",
+  "severity": "normal",
+  "alertable": false,
+  "upgrade": false,
+  "source": "p3 FH"
+ },
+ {
+  "code": "ELEVSTFR",
+  "description": "Elevator entrapment, fire response",
+  "category": "service",
+  "severity": "normal",
+  "alertable": false,
+  "upgrade": false,
+  "source": "p4 FE"
+ },
+ {
+  "code": "ELEVSTFRB",
+  "description": "Elevator entrapment, fire response, BLS",
+  "category": "service",
+  "severity": "normal",
+  "alertable": false,
+  "upgrade": false,
+  "source": "p4 FF"
+ },
+ {
+  "code": "ELEVSTFRM",
+  "description": "Elevator entrapment, fire response, multiple patients",
+  "category": "service",
+  "severity": "normal",
+  "alertable": false,
+  "upgrade": false,
+  "source": "p4 FDMULTP"
+ },
+ {
+  "code": "INVEST",
+  "description": "Investigation",
+  "category": "service",
+  "severity": "normal",
+  "alertable": false,
+  "upgrade": false,
+  "source": "p5 SE"
+ },
+ {
+  "code": "INVESTB",
+  "description": "Investigation, BLS",
+  "category": "service",
+  "severity": "normal",
+  "alertable": false,
+  "upgrade": false,
+  "source": "p4 FC"
+ },
+ {
+  "code": "INVESTM",
+  "description": "Investigation, multiple patients",
+  "category": "service",
+  "severity": "normal",
+  "alertable": false,
+  "upgrade": false,
+  "source": "p3 FX"
+ },
+ {
+  "code": "LIGHNINGB",
+  "description": "Lightning strike, BLS",
+  "category": "service",
+  "severity": "normal",
+  "alertable": false,
+  "upgrade": false,
+  "source": "p4 FG"
+ },
+ {
+  "code": "LIGHTNGSE",
+  "description": "Lightning strike, single engine",
+  "category": "service",
+  "severity": "normal",
+  "alertable": false,
+  "upgrade": false,
+  "source": "p5 SE"
+ },
+ {
+  "code": "LIGHTNING",
+  "description": "Lightning strike",
+  "category": "service",
+  "severity": "normal",
+  "alertable": false,
+  "upgrade": false,
+  "source": "p5 FE"
+ },
+ {
+  "code": "SHORT",
+  "description": "Electrical short",
+  "category": "service",
+  "severity": "normal",
+  "alertable": false,
+  "upgrade": false,
+  "source": "p4 FE"
+ },
+ {
+  "code": "SMOKEINV",
+  "description": "Smoke investigation",
+  "category": "service",
+  "severity": "normal",
+  "alertable": false,
+  "upgrade": false,
+  "source": "p5 SE"
+ },
+ {
+  "code": "TRANSFORMR",
+  "description": "Transformer fire (routine)",
+  "category": "service",
+  "severity": "normal",
+  "alertable": false,
+  "upgrade": false,
+  "source": "p5 SE"
+ },
+ {
+  "code": "TRNSFRMB",
+  "description": "Transformer fire, BLS",
+  "category": "service",
+  "severity": "normal",
+  "alertable": false,
+  "upgrade": false,
+  "source": "p4 FC"
+ },
+ {
+  "code": "WIRES",
+  "description": "Wires down",
+  "category": "service",
+  "severity": "normal",
+  "alertable": false,
+  "upgrade": false,
+  "source": "p5 SE"
+ },
+ {
+  "code": "WIRESB",
+  "description": "Wires down, BLS",
+  "category": "service",
+  "severity": "normal",
+  "alertable": false,
+  "upgrade": false,
+  "source": "p4 FC"
+ },
+ {
+  "code": "AIRBORNR",
+  "description": "Aircraft, airborne emergency (routine)",
+  "category": "service",
+  "severity": "low",
+  "alertable": false,
+  "upgrade": false,
+  "source": "p9 SA"
+ },
+ {
+  "code": "ALRMAFA",
+  "description": "Automatic fire alarm",
+  "category": "service",
+  "severity": "low",
+  "alertable": false,
+  "upgrade": false,
+  "source": "p6 FD1"
+ },
+ {
+  "code": "ALRMELEVR",
+  "description": "Elevator alarm (routine)",
+  "category": "service",
+  "severity": "low",
+  "alertable": false,
+  "upgrade": false,
+  "source": "p7 SCT"
+ },
+ {
+  "code": "ALRMHOMR",
+  "description": "Home alarm (routine)",
+  "category": "service",
+  "severity": "low",
+  "alertable": false,
+  "upgrade": false,
+  "source": "p5 SCE"
+ },
+ {
+  "code": "ALRMSER",
+  "description": "Alarm service (routine)",
+  "category": "service",
+  "severity": "low",
+  "alertable": false,
+  "upgrade": false,
+  "source": "p6 SCE"
+ },
+ {
+  "code": "BACKCNTRY",
+  "description": "Backcountry search",
+  "category": "service",
+  "severity": "low",
+  "alertable": false,
+  "upgrade": false,
+  "source": "p9 SA"
+ },
+ {
+  "code": "CTRBLRNR",
+  "description": "Controlled burn (routine)",
+  "category": "service",
+  "severity": "low",
+  "alertable": false,
+  "upgrade": false,
+  "source": "p6 SE"
+ },
+ {
+  "code": "DSASTRINF",
+  "description": "Disaster, information",
+  "category": "service",
+  "severity": "low",
+  "alertable": false,
+  "upgrade": false,
+  "source": "p6 SA"
+ },
+ {
+  "code": "DSASTRREF",
+  "description": "Disaster, refuge",
+  "category": "service",
+  "severity": "low",
+  "alertable": false,
+  "upgrade": false,
+  "source": "p9 SA"
+ },
+ {
+  "code": "DSASTRSC",
+  "description": "Disaster, standby",
+  "category": "service",
+  "severity": "low",
+  "alertable": false,
+  "upgrade": false,
+  "source": "p9 SA"
+ },
+ {
+  "code": "ELEVTR",
+  "description": "Elevator entrapment",
+  "category": "service",
+  "severity": "low",
+  "alertable": false,
+  "upgrade": false,
+  "source": "p7 SCT"
+ },
+ {
+  "code": "ELEVTRB",
+  "description": "Elevator entrapment, BLS",
+  "category": "service",
+  "severity": "low",
+  "alertable": false,
+  "upgrade": false,
+  "source": "p4 SCTE"
+ },
+ {
+  "code": "ELEVTRR",
+  "description": "Elevator entrapment, routine",
+  "category": "service",
+  "severity": "low",
+  "alertable": false,
+  "upgrade": false,
+  "source": "p7 SCT"
+ },
+ {
+  "code": "FALLR",
+  "description": "Fall, lift assist (routine)",
+  "category": "service",
+  "severity": "low",
+  "alertable": false,
+  "upgrade": false,
+  "source": "p7 SCANY"
+ },
+ {
+  "code": "INVESTR",
+  "description": "Investigation, routine",
+  "category": "service",
+  "severity": "low",
+  "alertable": false,
+  "upgrade": false,
+  "source": "p6 SE"
+ },
+ {
+  "code": "SVCANMLR",
+  "description": "Service call, animal (routine)",
+  "category": "service",
+  "severity": "low",
+  "alertable": false,
+  "upgrade": false,
+  "source": "p7 SCT"
+ },
+ {
+  "code": "SVCCALL",
+  "description": "Service call",
+  "category": "service",
+  "severity": "low",
+  "alertable": false,
+  "upgrade": false,
+  "source": "p7 SCT"
+ },
+ {
+  "code": "SVCCALLB",
+  "description": "Service call, BLS",
+  "category": "service",
+  "severity": "low",
+  "alertable": false,
+  "upgrade": false,
+  "source": "p5 SCTE"
+ },
+ {
+  "code": "SVCCALR",
+  "description": "Service call (routine)",
+  "category": "service",
+  "severity": "low",
+  "alertable": false,
+  "upgrade": false,
+  "source": "p7 SCT"
+ },
+ {
+  "code": "SVCCWELF",
+  "description": "Welfare check",
+  "category": "service",
+  "severity": "low",
+  "alertable": false,
+  "upgrade": false,
+  "source": "p7 SCE"
+ },
+ {
+  "code": "SVCLIFT",
+  "description": "Lift assist",
+  "category": "service",
+  "severity": "low",
+  "alertable": false,
+  "upgrade": false,
+  "source": "p7 SCANY"
+ },
+ {
+  "code": "SVCLOCKR",
+  "description": "Lockout (routine)",
+  "category": "service",
+  "severity": "low",
+  "alertable": false,
+  "upgrade": false,
+  "source": "p7 SCT"
+ },
+ {
+  "code": "SVCVEHLO",
+  "description": "Vehicle lockout",
+  "category": "service",
+  "severity": "low",
+  "alertable": false,
+  "upgrade": false,
+  "source": "p7 SCTE"
+ },
+ {
+  "code": "SVCWTRR",
+  "description": "Water problem (routine)",
+  "category": "service",
+  "severity": "low",
+  "alertable": false,
+  "upgrade": false,
+  "source": "p7 SCT"
+ },
+ {
+  "code": "TRANSFRMR",
+  "description": "Transformer fire (routine)",
+  "category": "service",
+  "severity": "low",
+  "alertable": false,
+  "upgrade": false,
+  "source": "p6 SE"
+ },
+ {
+  "code": "WIRESR",
+  "description": "Wires down, routine",
+  "category": "service",
+  "severity": "low",
+  "alertable": false,
+  "upgrade": false,
+  "source": "p6 SE"
+ }
+]

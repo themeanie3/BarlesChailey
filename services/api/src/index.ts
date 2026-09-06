@@ -6,10 +6,13 @@ import { listVar } from './env';
 import { withDb, type AppEnv } from './lib/auth';
 import { runCron } from './engine/cron';
 import { adminRoutes } from './routes/admin';
+import { authRoutes } from './routes/auth';
 import { deviceRoutes } from './routes/devices';
 import { feedRoutes } from './routes/feed';
 import { ingestRoutes } from './routes/ingest';
 import { meRoutes } from './routes/me';
+
+export { BoardState } from './board/board-state';
 
 export const app = new Hono<AppEnv>();
 
@@ -33,6 +36,7 @@ app.get('/healthz', (c) => c.json({ ok: true, env: c.env.APP_ENV, time: new Date
 app.get('/v1/openapi.yaml', (c) => c.text(openapi, 200, { 'content-type': 'application/yaml; charset=utf-8', 'cache-control': 'public, max-age=300' }));
 
 app.route('/', ingestRoutes);
+app.route('/v1', authRoutes);
 app.route('/v1', feedRoutes);
 app.route('/v1', meRoutes);
 app.route('/v1', deviceRoutes);

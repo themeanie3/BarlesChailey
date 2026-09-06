@@ -1,12 +1,14 @@
-# BarlesChailey API — Cloudflare Worker
+# BarlesChailey API — Cloudflare Worker + BoardState Durable Object
 #
 # Secrets (set with `wrangler secret put NAME --env <env>`):
-#   DATABASE_URL                 Neon owner connection string (pooled, sslmode=require)
-#   DATABASE_AUTHENTICATED_URL   Optional: Neon "authenticated" role URL for RLS-enforced user queries
-#   PUSH_SECRET                  Shared secret the station Pi sends in X-Push-Secret
-#   GOOGLE_MAPS_API_KEY          Geocoding API key (restrict to Geocoding API in Google Cloud)
-#   EXPO_ACCESS_TOKEN            Optional: enables "enhanced push security" on the Expo push API
-#   API_KEY_PEPPER               Random string mixed into API key hashes
+#   DATABASE_URL          Neon owner connection string (pooled, sslmode=require). Only touched by the
+#                         periodic flush, sign-in, preference writes and admin actions, so the free
+#                         tier's compute quota is not consumed by the live feed.
+#   PUSH_SECRET           Shared secret the station Pi sends in X-Push-Secret
+#   API_TOKEN_SECRET      HMAC secret for the long-lived API tokens the app receives after sign-in
+#   API_KEY_PEPPER        Random string mixed into API key hashes
+#   GOOGLE_MAPS_API_KEY   Geocoding API key (restrict to Geocoding API in Google Cloud)
+#   EXPO_ACCESS_TOKEN     Optional: enables "enhanced push security" on the Expo push API
 #
 # Plain vars live below per environment.
 
@@ -19,8 +21,22 @@ workers_dev = true
 [observability]
 enabled = true
 
+# Watchdog only: the Durable Object's own alarm drives flushes and receipt checks.
 [triggers]
-crons = ["*/15 * * * *"]
+crons = ["17 */6 * * *"]
+
+[[durable_objects.bindings]]
+name = "BOARD"
+class_name = "BoardState"
+
+[[migrations]]
+tag = "v1"
+new_sqlite_classes = ["BoardState"]
+
+[[rules]]
+type = "Text"
+globs = ["**/*.yaml"]
+fallthrough = true
 
 [vars]
 APP_ENV = "development"
@@ -28,8 +44,9 @@ FEED_SOURCE = "mcfrs-fsas"
 FEED_TIMEZONE = "America/New_York"
 STALE_AFTER_SECONDS = "20"
 CLEAR_GRACE_SECONDS = "20"
-NEON_AUTH_URL = "https://ep-floral-night-aujf5smv.neonauth.c-10.us-east-1.aws.neon.tech/neondb/auth"
-NEON_AUTH_JWKS_URL = "https://ep-floral-night-aujf5smv.neonauth.c-10.us-east-1.aws.neon.tech/neondb/auth/.well-known/jwks.json"
+FLUSH_INTERVAL_MINUTES = "30"
+NEON_AUTH_URL = "https://ep-solitary-meadow-aur80hkt.neonauth.c-10.us-east-1.aws.neon.tech/neondb/auth"
+NEON_AUTH_JWKS_URL = "https://ep-solitary-meadow-aur80hkt.neonauth.c-10.us-east-1.aws.neon.tech/neondb/auth/.well-known/jwks.json"
 # Comma-separated emails that are auto-approved as admins on first sign-in.
 ADMIN_EMAILS = ""
 # 'critical' requires the Apple Critical Alerts entitlement in the app build; 'time-sensitive' needs no approval.
@@ -39,43 +56,46 @@ CORS_ORIGINS = "http://localhost:8081"
 
 [env.staging]
 name = "barleschailey-api-staging"
+[[env.staging.durable_objects.bindings]]
+name = "BOARD"
+class_name = "BoardState"
+[env.staging.triggers]
+crons = ["17 */6 * * *"]
+[env.staging.observability]
+enabled = true
 [env.staging.vars]
 APP_ENV = "staging"
 FEED_SOURCE = "mcfrs-fsas"
 FEED_TIMEZONE = "America/New_York"
 STALE_AFTER_SECONDS = "20"
 CLEAR_GRACE_SECONDS = "20"
+FLUSH_INTERVAL_MINUTES = "30"
 NEON_AUTH_URL = "https://ep-solitary-meadow-aur80hkt.neonauth.c-10.us-east-1.aws.neon.tech/neondb/auth"
 NEON_AUTH_JWKS_URL = "https://ep-solitary-meadow-aur80hkt.neonauth.c-10.us-east-1.aws.neon.tech/neondb/auth/.well-known/jwks.json"
 ADMIN_EMAILS = ""
 ALERT_INTERRUPTION_LEVEL = "time-sensitive"
 ALERTS_CRITICAL_SOUND = "false"
 CORS_ORIGINS = ""
-[env.staging.triggers]
-crons = ["*/15 * * * *"]
-[env.staging.observability]
-enabled = true
 
 [env.production]
 name = "barleschailey-api"
+[[env.production.durable_objects.bindings]]
+name = "BOARD"
+class_name = "BoardState"
+[env.production.triggers]
+crons = ["17 */6 * * *"]
+[env.production.observability]
+enabled = true
 [env.production.vars]
 APP_ENV = "production"
 FEED_SOURCE = "mcfrs-fsas"
 FEED_TIMEZONE = "America/New_York"
 STALE_AFTER_SECONDS = "20"
 CLEAR_GRACE_SECONDS = "20"
+FLUSH_INTERVAL_MINUTES = "30"
 NEON_AUTH_URL = "https://ep-floral-night-aujf5smv.neonauth.c-10.us-east-1.aws.neon.tech/neondb/auth"
 NEON_AUTH_JWKS_URL = "https://ep-floral-night-aujf5smv.neonauth.c-10.us-east-1.aws.neon.tech/neondb/auth/.well-known/jwks.json"
 ADMIN_EMAILS = ""
 ALERT_INTERRUPTION_LEVEL = "time-sensitive"
 ALERTS_CRITICAL_SOUND = "false"
 CORS_ORIGINS = ""
-[env.production.triggers]
-crons = ["*/15 * * * *"]
-[env.production.observability]
-enabled = true
-
-[[rules]]
-type = "Text"
-globs = ["**/*.yaml"]
-fallthrough = true

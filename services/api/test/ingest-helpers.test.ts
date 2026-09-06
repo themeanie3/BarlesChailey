@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { unitsDelta } from '../src/engine/ingest';
+import { unitsDelta } from '../src/engine/diff';
 import { geocodeQueryKey, normalizeAddress, withinServiceArea } from '../src/lib/geocode';
 
 describe('unitsDelta', () => {

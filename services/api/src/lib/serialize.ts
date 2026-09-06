@@ -1,4 +1,63 @@
 import { FEED_VERSION, type Alert, type AlertPreferences, type Device, type Incident, type IncidentEvent } from '@barleschailey/feed';
+import type { AlertRecord, DeviceRecord, IncidentEventRecord, IncidentRecord, PrefsRecord } from '../engine/types';
+
+// ---------------------------------------------------------------------------
+// Durable Object records -> feed contract
+// ---------------------------------------------------------------------------
+
+export function recordToIncident(r: IncidentRecord): Incident {
+  return {
+    id: r.id,
+    feedVersion: FEED_VERSION,
+    source: r.source,
+    sourceKey: r.sourceKey,
+    status: r.status,
+    dispatchedAt: r.dispatchedAt,
+    address: r.address,
+    city: r.city,
+    location: r.lat != null && r.lon != null ? { lat: r.lat, lon: r.lon, formattedAddress: r.formattedAddress, geocodeStatus: 'ok' } : null,
+    call: { code: r.callCode, description: r.callDescription, category: r.category, severity: r.severity, alertable: r.alertable },
+    box: r.box,
+    station: r.station,
+    battalion: r.battalion,
+    units: r.units,
+    firstSeenAt: r.firstSeenAt,
+    lastSeenAt: r.lastSeenAt,
+    clearedAt: r.clearedAt,
+    updatedAt: r.updatedAt,
+    version: r.version,
+  };
+}
+
+export function recordToEvent(e: IncidentEventRecord): IncidentEvent {
+  return { id: e.id, incidentId: e.incidentId, kind: e.kind, at: e.at, data: e.data };
+}
+
+export function recordToDevice(d: DeviceRecord): Device {
+  return {
+    id: d.id, platform: d.platform, appVersion: d.appVersion, deviceName: d.deviceName, pushEnabled: d.pushEnabled,
+    criticalAlertsAuthorized: d.criticalAlertsAuthorized, lastSeenAt: d.lastSeenAt, lastLocationAt: d.recordedAt,
+  };
+}
+
+export function recordToPreferences(p: PrefsRecord): AlertPreferences {
+  return {
+    enabled: p.enabled, radiusMiles: p.radiusMiles, categories: p.categories, minSeverity: p.minSeverity,
+    locationMaxAgeHours: p.locationMaxAgeHours, home: p.home, quietHours: p.quietHours, snoozeUntil: p.snoozeUntil, alertOnUpgrade: p.alertOnUpgrade,
+  };
+}
+
+export function recordToAlert(a: AlertRecord): Alert {
+  return {
+    id: a.id, kind: a.kind, incidentId: a.incidentId, deviceId: a.deviceId,
+    distanceMiles: a.distanceM == null ? null : Math.round((a.distanceM / 1609.344) * 100) / 100,
+    sentAt: a.sentAt, receiptStatus: a.receiptStatus, receiptError: a.receiptError,
+  };
+}
+
+// ---------------------------------------------------------------------------
+// Postgres rows (cold path) -> records / contract
+// ---------------------------------------------------------------------------
 
 export interface IncidentRow {
   id: string;
@@ -31,39 +90,18 @@ export interface IncidentRow {
 export const iso = (v: string | Date | null | undefined): string | null => (v == null ? null : new Date(v).toISOString());
 const isoReq = (v: string | Date): string => new Date(v).toISOString();
 
-export function toIncident(r: IncidentRow): Incident {
+export function rowToIncidentRecord(r: IncidentRow): IncidentRecord {
   return {
-    id: r.id,
-    feedVersion: FEED_VERSION,
-    source: r.source,
-    sourceKey: r.source_key,
-    status: r.status,
-    dispatchedAt: isoReq(r.dispatched_at),
-    address: r.address,
-    city: r.city,
-    location:
-      r.lat != null && r.lon != null
-        ? { lat: r.lat, lon: r.lon, formattedAddress: r.formatted_address, geocodeStatus: 'ok' }
-        : r.geocode_status === 'failed'
-          ? null
-          : null,
-    call: {
-      code: r.call_code,
-      description: r.call_description,
-      category: r.category,
-      severity: r.severity,
-      alertable: r.alertable,
-    },
-    box: r.box,
-    station: r.station,
-    battalion: r.battalion,
-    units: r.units ?? [],
-    firstSeenAt: isoReq(r.first_seen_at),
-    lastSeenAt: isoReq(r.last_seen_at),
-    clearedAt: iso(r.cleared_at),
-    updatedAt: isoReq(r.updated_at),
-    version: r.version,
+    id: r.id, source: r.source, sourceKey: r.source_key, status: r.status, dispatchedAt: isoReq(r.dispatched_at), address: r.address, city: r.city,
+    lat: r.lat, lon: r.lon, formattedAddress: r.formatted_address, geocodeStatus: r.geocode_status, geocodeAttempts: 0,
+    callCode: r.call_code, callDescription: r.call_description, category: r.category, severity: r.severity, alertable: r.alertable, isUpgrade: false,
+    box: r.box, station: r.station, battalion: r.battalion, units: r.units ?? [],
+    firstSeenAt: isoReq(r.first_seen_at), lastSeenAt: isoReq(r.last_seen_at), clearedAt: iso(r.cleared_at), updatedAt: isoReq(r.updated_at), version: r.version,
   };
+}
+
+export function toIncident(r: IncidentRow): Incident {
+  return recordToIncident(rowToIncidentRecord(r));
 }
 
 export interface EventRow { id: string; incident_id: string; kind: IncidentEvent['kind']; at: string | Date; data: Record<string, unknown> }
@@ -72,16 +110,27 @@ export function toEvent(r: EventRow): IncidentEvent {
 }
 
 export interface PrefsRow {
-  enabled: boolean; radius_miles: string | number; categories: AlertPreferences['categories']; min_severity: AlertPreferences['minSeverity'];
+  user_id: string;
+  enabled: boolean; radius_miles: string | number; categories: AlertPreferences['categories'] | string; min_severity: AlertPreferences['minSeverity'];
   location_max_age_hours: number; home_lat: number | null; home_lon: number | null; home_radius_miles: string | number | null; home_label: string | null;
   quiet_start: string | null; quiet_end: string | null; quiet_allow_critical: boolean; snooze_until: string | Date | null; alert_on_upgrade: boolean;
+  updated_at: string | Date;
 }
 const hhmm = (t: string | null): string | null => (t ? t.slice(0, 5) : null);
-export function toPreferences(r: PrefsRow): AlertPreferences {
+
+/** Enum arrays come back from the HTTP driver as Postgres array literals; plain arrays pass through. */
+function parseCategories(v: PrefsRow['categories']): AlertPreferences['categories'] {
+  if (Array.isArray(v)) return v;
+  if (typeof v === 'string') return v.replace(/^\{|\}$/g, '').split(',').map((s) => s.trim()).filter(Boolean) as AlertPreferences['categories'];
+  return [];
+}
+
+export function rowToPrefsRecord(r: PrefsRow): PrefsRecord {
   return {
+    userId: r.user_id,
     enabled: r.enabled,
     radiusMiles: Number(r.radius_miles),
-    categories: r.categories ?? [],
+    categories: parseCategories(r.categories),
     minSeverity: r.min_severity,
     locationMaxAgeHours: r.location_max_age_hours,
     home:
@@ -91,28 +140,10 @@ export function toPreferences(r: PrefsRow): AlertPreferences {
     quietHours: r.quiet_start && r.quiet_end ? { start: hhmm(r.quiet_start)!, end: hhmm(r.quiet_end)!, allowCritical: r.quiet_allow_critical } : null,
     snoozeUntil: iso(r.snooze_until),
     alertOnUpgrade: r.alert_on_upgrade,
+    updatedAt: isoReq(r.updated_at),
   };
 }
 
-export interface DeviceRow {
-  id: string; platform: Device['platform']; app_version: string; device_name: string | null; push_enabled: boolean;
-  critical_alerts_authorized: boolean; last_seen_at: string | Date; last_location_at?: string | Date | null;
-}
-export function toDevice(r: DeviceRow): Device {
-  return {
-    id: r.id, platform: r.platform, appVersion: r.app_version, deviceName: r.device_name, pushEnabled: r.push_enabled,
-    criticalAlertsAuthorized: r.critical_alerts_authorized, lastSeenAt: isoReq(r.last_seen_at), lastLocationAt: iso(r.last_location_at ?? null),
-  };
-}
-
-export interface AlertRow {
-  id: string; kind: Alert['kind']; incident_id: string | null; device_id: string; distance_m: number | null; sent_at: string | Date;
-  receipt_status: Alert['receiptStatus']; receipt_error: string | null;
-}
-export function toAlert(r: AlertRow): Alert {
-  return {
-    id: r.id, kind: r.kind, incidentId: r.incident_id, deviceId: r.device_id,
-    distanceMiles: r.distance_m == null ? null : Math.round((r.distance_m / 1609.344) * 100) / 100,
-    sentAt: isoReq(r.sent_at), receiptStatus: r.receipt_status, receiptError: r.receipt_error,
-  };
+export function toPreferences(r: PrefsRow): AlertPreferences {
+  return recordToPreferences(rowToPrefsRecord(r));
 }

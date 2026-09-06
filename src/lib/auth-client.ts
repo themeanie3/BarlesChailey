@@ -8,7 +8,10 @@ import { KEYS, storage } from './storage';
 /**
  * Better Auth client pointed at Neon Managed Better Auth. The Expo plugin keeps
  * the session cookie in the Keychain and re-attaches it to every auth request.
- * Neon's JWT plugin turns that session into a short-lived JWT for our API.
+ *
+ * Token flow: Neon session → short-lived Neon JWT (`/token`) → exchanged once at
+ * our API for a 30-day API token. Only that exchange touches Neon; all routine
+ * calls (polling, location pings) use the API token, so the database can sleep.
  */
 export const authClient = createAuthClient({
   baseURL: config.neonAuthUrl,
@@ -19,7 +22,10 @@ export const authClient = createAuthClient({
   ],
 });
 
-interface CachedJwt { token: string; exp: number }
+interface CachedToken { token: string; exp: number }
+
+/** Re-exchange when the API token is within a day of expiring. */
+const RENEW_BEFORE_MS = 24 * 3600 * 1000;
 
 function decodeExp(token: string): number {
   try {
@@ -32,22 +38,35 @@ function decodeExp(token: string): number {
 
 let inflight: Promise<string | null> | null = null;
 
-/** Returns a JWT for the API, refreshing it from Neon Auth when it is within a minute of expiring. */
+async function exchange(): Promise<string | null> {
+  const res = await authClient.token();
+  const neonJwt = res.data?.token ?? null;
+  if (!neonJwt) return null;
+  const r = await fetch(`${config.apiUrl}/v1/auth/exchange`, {
+    method: 'POST',
+    headers: { authorization: `Bearer ${neonJwt}`, accept: 'application/json' },
+  });
+  if (!r.ok) throw new Error(`exchange failed: HTTP ${r.status}`);
+  const body = (await r.json()) as { token: string; expiresAt: string };
+  await storage.setJSON(KEYS.jwt, { token: body.token, exp: decodeExp(body.token) || Date.parse(body.expiresAt) } satisfies CachedToken);
+  return body.token;
+}
+
+/** Returns the API token, exchanging a fresh Neon JWT for a new one when missing, forced, or close to expiry. */
 export async function getApiToken(force = false): Promise<string | null> {
   if (!force) {
-    const cached = await storage.getJSON<CachedJwt>(KEYS.jwt);
-    if (cached && cached.exp - Date.now() > 60_000) return cached.token;
+    const cached = await storage.getJSON<CachedToken>(KEYS.jwt);
+    if (cached && cached.exp - Date.now() > RENEW_BEFORE_MS) return cached.token;
   }
   if (inflight) return inflight;
   inflight = (async () => {
     try {
-      const res = await authClient.token();
-      const token = res.data?.token ?? null;
-      if (token) await storage.setJSON(KEYS.jwt, { token, exp: decodeExp(token) } satisfies CachedJwt);
-      return token;
+      return await exchange();
     } catch (err) {
       console.warn('getApiToken failed', err);
-      return null;
+      // Keep using a still-valid cached token if the exchange is temporarily unavailable.
+      const cached = await storage.getJSON<CachedToken>(KEYS.jwt);
+      return cached && cached.exp > Date.now() ? cached.token : null;
     } finally {
       inflight = null;
     }

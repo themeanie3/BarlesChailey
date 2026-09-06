@@ -1,7 +1,8 @@
-import { createRemoteJWKSet, jwtVerify, type JWTPayload } from 'jose';
+import { SignJWT, createRemoteJWKSet, jwtVerify, type JWTPayload } from 'jose';
 import type { Context, MiddlewareHandler } from 'hono';
 import type { Env } from '../env';
-import { listVar } from '../env';
+import { board, listVar } from '../env';
+import type { MemberRecord } from '../engine/types';
 import { db, type Sql } from './db';
 import { hashApiKey, secretsEqual } from './crypto';
 
@@ -9,7 +10,8 @@ export interface AuthUser {
   id: string;
   email: string | null;
   name: string | null;
-  jwt: string;
+  /** The raw token presented (Neon JWT on exchange, API token otherwise). */
+  token: string;
   claims: JWTPayload;
 }
 
@@ -34,6 +36,13 @@ export type Vars = {
 
 export type AppEnv = { Bindings: Env; Variables: Vars };
 
+const API_TOKEN_ISSUER = 'barleschailey';
+export const API_TOKEN_TTL_SECONDS = 30 * 24 * 3600;
+
+// ---------------------------------------------------------------------------
+// Neon Auth JWT (used once, at sign-in, to mint an API token)
+// ---------------------------------------------------------------------------
+
 const jwksCache = new Map<string, ReturnType<typeof createRemoteJWKSet>>();
 
 function jwksFor(url: string) {
@@ -46,7 +55,7 @@ function jwksFor(url: string) {
 }
 
 /** Verify a Neon Auth (Better Auth JWT plugin) token against the branch JWKS. */
-export async function verifyBearer(env: Env, token: string): Promise<AuthUser> {
+export async function verifyNeonJwt(env: Env, token: string): Promise<AuthUser> {
   const { payload } = await jwtVerify(token, jwksFor(env.NEON_AUTH_JWKS_URL), {
     ...(env.NEON_AUTH_JWT_ISSUER ? { issuer: env.NEON_AUTH_JWT_ISSUER } : {}),
     clockTolerance: 30,
@@ -54,23 +63,82 @@ export async function verifyBearer(env: Env, token: string): Promise<AuthUser> {
   if (!payload.sub) throw new Error('token has no subject');
   const email = typeof payload.email === 'string' ? payload.email.trim().toLowerCase() : null;
   const name = typeof payload.name === 'string' ? payload.name : null;
-  return { id: payload.sub, email, name, jwt: token, claims: payload };
+  return { id: payload.sub, email, name, token, claims: payload };
 }
 
-/** Attaches a per-request owner-role SQL client. */
+/** @deprecated name kept for older call sites */
+export const verifyBearer = verifyNeonJwt;
+
+// ---------------------------------------------------------------------------
+// API tokens (HS256, 30 days). Routine app traffic never touches Neon Auth.
+// ---------------------------------------------------------------------------
+
+function tokenSecret(env: Env): Uint8Array {
+  if (!env.API_TOKEN_SECRET || env.API_TOKEN_SECRET.length < 16) throw new Error('API_TOKEN_SECRET is not configured');
+  return new TextEncoder().encode(env.API_TOKEN_SECRET);
+}
+
+export async function issueApiToken(env: Env, user: { id: string; email: string | null; name: string | null }): Promise<{ token: string; expiresAt: string }> {
+  const now = Math.floor(Date.now() / 1000);
+  const exp = now + API_TOKEN_TTL_SECONDS;
+  const token = await new SignJWT({ email: user.email ?? undefined, name: user.name ?? undefined })
+    .setProtectedHeader({ alg: 'HS256', typ: 'JWT' })
+    .setSubject(user.id)
+    .setIssuer(API_TOKEN_ISSUER)
+    .setAudience(env.APP_ENV)
+    .setIssuedAt(now)
+    .setExpirationTime(exp)
+    .sign(tokenSecret(env));
+  return { token, expiresAt: new Date(exp * 1000).toISOString() };
+}
+
+export async function verifyApiToken(env: Env, token: string): Promise<AuthUser> {
+  const { payload } = await jwtVerify(token, tokenSecret(env), { issuer: API_TOKEN_ISSUER, audience: env.APP_ENV, clockTolerance: 30 });
+  if (!payload.sub) throw new Error('token has no subject');
+  return {
+    id: payload.sub,
+    email: typeof payload.email === 'string' ? payload.email : null,
+    name: typeof payload.name === 'string' ? payload.name : null,
+    token,
+    claims: payload,
+  };
+}
+
+// ---------------------------------------------------------------------------
+// Middleware
+// ---------------------------------------------------------------------------
+
+/** Attaches a per-request owner-role SQL client (lazy: no connection is made until a query runs). */
 export const withDb: MiddlewareHandler<AppEnv> = async (c, next) => {
   c.set('sql', db(c.env));
   c.set('apiKey', null);
   await next();
 };
 
-/** Verifies the bearer JWT and stores the user on the context. Returns a 401 response on failure. */
-export async function authenticateUser(c: Context<AppEnv>): Promise<Response | null> {
+function bearer(c: Context<AppEnv>): string | null {
   const header = c.req.header('authorization') ?? '';
-  if (!header.startsWith('Bearer ')) return c.json({ error: 'unauthorized' }, 401);
+  return header.startsWith('Bearer ') ? header.slice(7).trim() : null;
+}
+
+/** Authenticates the app's API token. Returns a 401 response on failure. */
+export async function authenticateUser(c: Context<AppEnv>): Promise<Response | null> {
+  const token = bearer(c);
+  if (!token) return c.json({ error: 'unauthorized' }, 401);
+  try {
+    c.set('user', await verifyApiToken(c.env, token));
+    return null;
+  } catch (err) {
+    return c.json({ error: 'unauthorized', detail: (err as Error).message }, 401);
+  }
+}
+
+/** Authenticates a Neon Auth JWT (sign-in exchange only). */
+export async function authenticateNeon(c: Context<AppEnv>): Promise<Response | null> {
+  const token = bearer(c);
+  if (!token) return c.json({ error: 'unauthorized' }, 401);
   let user: AuthUser;
   try {
-    user = await verifyBearer(c.env, header.slice(7).trim());
+    user = await verifyNeonJwt(c.env, token);
   } catch (err) {
     return c.json({ error: 'unauthorized', detail: (err as Error).message }, 401);
   }
@@ -95,9 +163,9 @@ export const requireUser: MiddlewareHandler<AppEnv> = async (c, next) => {
 interface MemberRow { email: string; user_id: string | null; role: Member['role']; status: Member['status'] }
 
 /**
- * Find or create the membership row for a signed-in user. First sign-in by an
- * address listed in ADMIN_EMAILS becomes an active admin; anyone else lands in
- * "pending" until an admin approves them.
+ * Find or create the membership row for a signed-in user in Postgres. First
+ * sign-in by an address listed in ADMIN_EMAILS becomes an active admin;
+ * anyone else lands in "pending" until an admin approves them.
  */
 export async function resolveMember(sql: Sql, env: Env, user: AuthUser): Promise<Member> {
   const email = user.email;
@@ -129,9 +197,23 @@ export async function resolveMember(sql: Sql, env: Env, user: AuthUser): Promise
   return { email: row.email, role: row.role, status: row.status };
 }
 
+/** Membership via the Durable Object cache; Postgres only on a miss (first sign-in, or once a day). */
+export async function resolveMemberCached(c: Context<AppEnv>, forceRefresh = false): Promise<Member> {
+  const user = c.var.user;
+  const b = board(c.env);
+  if (!forceRefresh) {
+    const cached = await b.getMember(user.id);
+    if (cached) return { email: cached.email, role: cached.role, status: cached.status };
+  }
+  const member = await resolveMember(c.var.sql, c.env, user);
+  const record: MemberRecord = { userId: user.id, email: member.email || user.email || '', role: member.role, status: member.status, syncedAt: new Date().toISOString() };
+  await b.setMember(record);
+  return member;
+}
+
 /** Resolves membership for the authenticated user. Returns a 403 response unless the member is active. */
 export async function authorizeMember(c: Context<AppEnv>): Promise<Response | null> {
-  const member = await resolveMember(c.var.sql, c.env, c.var.user);
+  const member = await resolveMemberCached(c);
   c.set('member', member);
   if (member.status !== 'active') {
     return c.json({ error: member.status === 'revoked' ? 'revoked' : 'pending_approval', member }, 403);
@@ -150,12 +232,21 @@ export const requireAdmin: MiddlewareHandler<AppEnv> = async (c, next) => {
   await next();
 };
 
-export async function lookupApiKey(sql: Sql, env: Env, key: string): Promise<ApiKeyPrincipal | null> {
-  const hash = await hashApiKey(env.API_KEY_PEPPER ?? '', key);
-  const rows = (await sql`
+// ---------------------------------------------------------------------------
+// API keys (server-to-server), cached in the Durable Object
+// ---------------------------------------------------------------------------
+
+export async function lookupApiKey(c: Context<AppEnv>, key: string): Promise<ApiKeyPrincipal | null> {
+  const hash = await hashApiKey(c.env.API_KEY_PEPPER ?? '', key);
+  const b = board(c.env);
+  const cached = await b.getApiKey(hash);
+  if (cached) return cached.revoked ? null : { id: cached.id, name: cached.name, scopes: cached.scopes };
+  const rows = (await c.var.sql`
     UPDATE api_keys SET last_used_at = now() WHERE key_hash = ${hash} AND revoked_at IS NULL
     RETURNING id, name, scopes`) as ApiKeyPrincipal[];
-  return rows[0] ?? null;
+  const principal = rows[0] ?? null;
+  await b.setApiKey(hash, principal ? { ...principal, revoked: false } : { id: '', name: '', scopes: [], revoked: true });
+  return principal;
 }
 
 /** Ingest is authenticated by the station's shared secret or an API key with the `ingest` scope. */
@@ -164,7 +255,7 @@ export const requireIngestAuth: MiddlewareHandler<AppEnv> = async (c, next) => {
   if (pushSecret && (await secretsEqual(pushSecret, c.env.PUSH_SECRET))) return next();
   const apiKey = c.req.header('x-api-key');
   if (apiKey) {
-    const principal = await lookupApiKey(c.var.sql, c.env, apiKey);
+    const principal = await lookupApiKey(c, apiKey);
     if (principal?.scopes.includes('ingest')) {
       c.set('apiKey', principal);
       return next();
@@ -173,11 +264,11 @@ export const requireIngestAuth: MiddlewareHandler<AppEnv> = async (c, next) => {
   return c.json({ error: 'forbidden' }, 403);
 };
 
-/** Feed reads accept either a member's JWT or an API key with `read:feed` (for dashboards). */
+/** Feed reads accept either a member's API token or an API key with `read:feed` (for dashboards). */
 export const requireReader: MiddlewareHandler<AppEnv> = async (c, next) => {
   const apiKey = c.req.header('x-api-key');
   if (apiKey) {
-    const principal = await lookupApiKey(c.var.sql, c.env, apiKey);
+    const principal = await lookupApiKey(c, apiKey);
     if (principal?.scopes.includes('read:feed')) {
       c.set('apiKey', principal);
       return next();

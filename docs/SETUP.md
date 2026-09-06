@@ -30,7 +30,8 @@ neonctl connection-string --project-id fragrant-glade-93406829 --branch producti
 neonctl connection-string --project-id fragrant-glade-93406829 --branch dev --pooled          # DATABASE_URL (staging)
 ```
 
-Future schema changes: add `0002_….sql` and run `DATABASE_URL=… npm run migrate -w @barleschailey/api`
+Migrations `0001_init.sql` and `0002_call_types_response_plans.sql` are applied to both branches.
+Future schema changes: add `0003_….sql` and run `DATABASE_URL=… npm run migrate -w @barleschailey/api`
 against each branch (or `neon` MCP / console SQL editor).
 
 ### Google sign-in on Neon Auth
@@ -59,6 +60,7 @@ wrangler login
 # staging
 wrangler secret put DATABASE_URL --env staging          # dev branch, pooled
 wrangler secret put PUSH_SECRET --env staging           # openssl rand -hex 32
+wrangler secret put API_TOKEN_SECRET --env staging      # openssl rand -hex 32 (signs the app's 30-day API tokens)
 wrangler secret put API_KEY_PEPPER --env staging        # openssl rand -hex 32
 wrangler secret put GOOGLE_MAPS_API_KEY --env staging   # Geocoding API only, restricted key
 # repeat with --env production using the production branch URL
@@ -73,8 +75,10 @@ curl https://barleschailey-api-staging.<account>.workers.dev/healthz
 ```
 
 Optional: `EXPO_ACCESS_TOKEN` secret if you enable "enhanced push security" on expo.dev.
-Optional: `DATABASE_AUTHENTICATED_URL` (the `authenticated` role URL from the Neon Data API page)
-to have the Worker run user-scoped queries under RLS.
+
+The first deploy also creates the `BoardState` Durable Object (SQLite-backed, free tier). It flushes
+to Neon every 30 minutes (`FLUSH_INTERVAL_MINUTES`); `POST /v1/admin/flush` forces one, and
+`GET /v1/admin/stats` shows `board.pending` / `board.lastFlushAt`.
 
 ### Point the station at it
 
@@ -188,4 +192,8 @@ npx expo start --dev-client
 * Board empty but Pi running: `GET /v1/feed/status` → `stale: true` means `/push` is not
   arriving (wrong URL/secret, Pi firewall — the Pi binds outbound traffic to `wlan0`, set `FEED_IFACE=wlan0`).
 * Geocoding failures: incidents show "no map position"; check `GOOGLE_MAPS_API_KEY` and that the
-  key allows the Geocoding API; the address cache is in `geocode_cache`.
+  key allows the Geocoding API; the address cache lives in the Durable Object (and `geocode_cache` for archives).
+* Postgres looks empty / behind: history arrives every 30 minutes. `GET /v1/admin/stats` → `board.lastFlushError`
+  tells you if a flush failed (bad `DATABASE_URL`, Neon quota); `POST /v1/admin/flush` retries now.
+* App keeps asking to sign in: the 30-day API token could not be renewed — `API_TOKEN_SECRET` changed or
+  differs between environments. Sign out and back in.

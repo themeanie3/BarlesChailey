@@ -6,7 +6,8 @@ info:
     Standardized MCFRS dispatch feed and responder alerting API.
 
     **Authentication**
-    * Members: `Authorization: Bearer <Neon Auth JWT>` (obtained from the Neon Auth `/token` endpoint after sign-in).
+    * Members: sign in with Neon Auth, fetch a short-lived Neon JWT (`/token`), and exchange it once at
+      `POST /v1/auth/exchange` for a 30-day API token. Use `Authorization: Bearer <API token>` everywhere else.
     * Servers / dashboards: `X-Api-Key: bck_...` with scopes `read:feed` and/or `ingest`.
     * Station ingest: `X-Push-Secret: <shared secret>` (legacy-compatible with sta03-dashboard `/push`).
 servers:
@@ -50,6 +51,25 @@ paths:
         "200":
           description: diff summary
           content: { application/json: { schema: { $ref: "#/components/schemas/IngestResult" } } }
+  /v1/auth/exchange:
+    post:
+      tags: [me]
+      summary: Exchange a Neon Auth JWT for a 30-day API token
+      description: The only authenticated call that verifies against Neon Auth. Pending members receive a token too, so the app can poll `/v1/me` for approval.
+      security: [{ bearer: [] }]
+      responses:
+        "200":
+          description: token issued
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  token: { type: string }
+                  expiresAt: { type: string, format: date-time }
+                  ttlSeconds: { type: integer }
+                  member: { type: object, properties: { role: { type: string }, status: { type: string } } }
+        "401": { description: Neon JWT invalid or expired }
   /v1/feed/status:
     get:
       tags: [feed]
@@ -65,6 +85,7 @@ paths:
         - { name: since, in: query, schema: { type: string, format: date-time }, description: Incremental sync — incidents updated after this instant, any status }
         - { name: limit, in: query, schema: { type: integer, minimum: 1, maximum: 200, default: 100 } }
         - { name: includeSimulated, in: query, schema: { type: string, enum: ["1"] } }
+        - { name: archive, in: query, schema: { type: string, enum: ["1"] }, description: Read from Postgres history instead of the live board (last 7 days) }
       responses:
         "200": { description: OK, content: { application/json: { schema: { $ref: "#/components/schemas/IncidentList" } } } }
   /v1/incidents/{id}:
@@ -149,6 +170,8 @@ paths:
       responses: { "200": { description: OK } }
   /v1/admin/stats:
     get: { tags: [admin], summary: Operational counters, responses: { "200": { description: OK } } }
+  /v1/admin/flush:
+    post: { tags: [admin], summary: Flush the live board to Postgres now, responses: { "200": { description: OK } } }
   /v1/admin/api-keys:
     get: { tags: [admin], summary: List API keys, responses: { "200": { description: OK } } }
     post:

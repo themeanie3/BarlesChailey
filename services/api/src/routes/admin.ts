@@ -1,11 +1,11 @@
 import { Hono } from 'hono';
 import { z } from 'zod';
-import { IncidentCategory, Severity } from '@barleschailey/feed';
+import { IncidentCategory, Severity, cityForBox } from '@barleschailey/feed';
+import { board } from '../env';
 import { requireAdmin, requireMember, requireUser, type AppEnv } from '../lib/auth';
 import { hashApiKey, randomToken } from '../lib/crypto';
-import { toIncident, type IncidentRow } from '../lib/serialize';
-import { dispatchAlerts } from '../engine/alerts';
-import { classify, invalidateRuleCache, loadRules } from '../engine/classify';
+import { recordToIncident } from '../lib/serialize';
+import { invalidateRuleCache, loadRules, type Rule } from '../engine/classify';
 
 export const adminRoutes = new Hono<AppEnv>();
 adminRoutes.use('*', requireUser, requireMember, requireAdmin);
@@ -13,14 +13,16 @@ adminRoutes.use('*', requireUser, requireMember, requireAdmin);
 adminRoutes.get('/members', async (c) => {
   const rows = (await c.var.sql`
     SELECT m.email, m.user_id AS "userId", m.role, m.status, m.display_name AS "displayName", m.created_at AS "createdAt",
-           (SELECT count(*)::int FROM devices d WHERE d.user_id = m.user_id) AS devices
+           (SELECT count(*)::int FROM devices d WHERE d.user_id = m.user_id AND d.push_enabled) AS devices
     FROM members m ORDER BY m.status, m.created_at`) as unknown[];
   return c.json({ members: rows });
 });
 
 const MemberPatch = z.object({ role: z.enum(['admin', 'member']).optional(), status: z.enum(['pending', 'active', 'revoked']).optional(), displayName: z.string().max(120).optional() });
 
-/** Invite (creates an active member) or update a member by email. */
+interface MemberOut { email: string; userId: string | null; role: 'admin' | 'member'; status: 'pending' | 'active' | 'revoked'; displayName: string | null }
+
+/** Invite (creates an active member) or update a member by email. Takes effect immediately via the Durable Object cache. */
 adminRoutes.put('/members/:email', async (c) => {
   const email = decodeURIComponent(c.req.param('email')).trim().toLowerCase();
   if (!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(email)) return c.json({ error: 'bad email' }, 400);
@@ -35,14 +37,20 @@ adminRoutes.put('/members/:email', async (c) => {
       status = COALESCE(${p.status ?? null}::member_status, members.status),
       display_name = COALESCE(${p.displayName ?? null}, members.display_name),
       updated_at = now()
-    RETURNING email, user_id AS "userId", role, status, display_name AS "displayName"`) as unknown[];
-  return c.json({ member: rows[0] });
+    RETURNING email, user_id AS "userId", role, status, display_name AS "displayName"`) as MemberOut[];
+  const m = rows[0]!;
+  const b = board(c.env);
+  if (m.userId) await b.setMember({ userId: m.userId, email: m.email, role: m.role, status: m.status, syncedAt: new Date().toISOString() });
+  else await b.invalidateMemberByEmail(m.email);
+  return c.json({ member: m });
 });
 
 adminRoutes.delete('/members/:email', async (c) => {
   const email = decodeURIComponent(c.req.param('email')).trim().toLowerCase();
   if (email === c.var.user.email) return c.json({ error: 'cannot revoke yourself' }, 400);
-  await c.var.sql`UPDATE members SET status = 'revoked', updated_at = now() WHERE email = ${email}`;
+  const rows = (await c.var.sql`UPDATE members SET status = 'revoked', updated_at = now() WHERE email = ${email} RETURNING email, user_id AS "userId", role, status`) as MemberOut[];
+  const m = rows[0];
+  if (m?.userId) await board(c.env).setMember({ userId: m.userId, email: m.email, role: m.role, status: 'revoked', syncedAt: new Date().toISOString() });
   return c.json({ ok: true });
 });
 
@@ -72,6 +80,8 @@ adminRoutes.put('/call-types/:code', async (c) => {
       updated_at = now()
     RETURNING code, description, category, severity, alertable, is_upgrade AS "isUpgrade"`) as unknown[];
   invalidateRuleCache();
+  const all = await loadRules(c.var.sql);
+  await board(c.env).setRules([...all.values()] as Rule[]);
   return c.json({ rule: rows[0] });
 });
 
@@ -88,40 +98,39 @@ const Simulate = z.object({
 /**
  * End-to-end drill: inserts a synthetic incident at the given point and runs
  * the real alert matcher against it. Simulated incidents are hidden from the
- * board unless ?includeSimulated=1 and are auto-cleared by the cron.
+ * board unless ?includeSimulated=1 and are auto-cleared after 30 minutes.
  */
 adminRoutes.post('/simulate', async (c) => {
   const parsed = Simulate.safeParse(await c.req.json().catch(() => null));
   if (!parsed.success) return c.json({ error: 'invalid simulation', issues: parsed.error.issues }, 400);
   const s = parsed.data;
-  const rules = await loadRules(c.var.sql);
-  const cls = classify(s.code, rules);
-  const rows = (await c.var.sql`
-    INSERT INTO incidents (source, source_key, status, dispatched_at, address, city, lat, lon, formatted_address, geocode_status,
-                           call_code, call_description, category, severity, alertable, box, station, battalion, units)
-    VALUES ('simulation', ${`sim-${Date.now()}-${randomToken(4)}`}, 'active', now(), ${s.address.toUpperCase()}, 'ROCKVILLE', ${s.lat}, ${s.lon}, ${s.address}, 'ok',
-            ${s.code.toUpperCase()}, ${s.description ?? rules.get(s.code.toUpperCase())?.description ?? s.code}, ${cls.category}::incident_category, ${cls.severity}::severity, true,
-            ${s.box}, ${s.box.slice(0, 2)}, NULL, ${s.units}::text[])
-    RETURNING *`) as IncidentRow[];
-  const inc = rows[0]!;
-  await c.var.sql`INSERT INTO incident_events (incident_id, kind, data) VALUES (${inc.id}, 'created', ${JSON.stringify({ simulatedBy: c.var.user.email })}::jsonb)`;
-  const result = await dispatchAlerts(c.env, c.var.sql, inc, 'dispatch');
-  return c.json({ incident: toIncident(inc), alerts: result });
+  const b = board(c.env);
+  const rules = await b.getRules();
+  const rule = rules.find((r) => r.code === s.code.toUpperCase());
+  const { incident, alerts } = await b.simulate({
+    lat: s.lat, lon: s.lon, address: s.address, city: cityForBox(s.box) ?? 'ROCKVILLE', code: s.code, description: s.description ?? rule?.description ?? s.code,
+    box: s.box, units: s.units, by: c.var.user.email ?? c.var.user.id,
+  });
+  return c.json({ incident: recordToIncident(incident), alerts });
 });
 
 adminRoutes.get('/stats', async (c) => {
+  const b = board(c.env);
+  const status = await b.status();
   const [row] = (await c.var.sql`
     SELECT
-      (SELECT count(*)::int FROM incidents WHERE status = 'active') AS active_incidents,
-      (SELECT count(*)::int FROM incidents WHERE first_seen_at > now() - interval '24 hours') AS incidents_24h,
-      (SELECT count(*)::int FROM alerts WHERE sent_at > now() - interval '24 hours') AS alerts_24h,
-      (SELECT count(*)::int FROM alerts WHERE sent_at > now() - interval '24 hours' AND receipt_status = 'error') AS alert_errors_24h,
-      (SELECT count(*)::int FROM devices WHERE push_enabled) AS devices,
+      (SELECT count(*)::int FROM incidents WHERE first_seen_at > now() - interval '24 hours') AS incidents_24h_archived,
+      (SELECT count(*)::int FROM alerts WHERE sent_at > now() - interval '24 hours') AS alerts_24h_archived,
+      (SELECT count(*)::int FROM alerts WHERE sent_at > now() - interval '24 hours' AND receipt_status = 'error') AS alert_errors_24h_archived,
       (SELECT count(*)::int FROM members WHERE status = 'active') AS active_members,
-      (SELECT count(*)::int FROM members WHERE status = 'pending') AS pending_members,
-      (SELECT count(*)::int FROM geocode_cache) AS geocode_cache_size,
-      (SELECT last_push_at FROM feed_sources WHERE source = ${c.env.FEED_SOURCE}) AS last_push_at`) as Array<Record<string, unknown>>;
-  return c.json(row);
+      (SELECT count(*)::int FROM members WHERE status = 'pending') AS pending_members`) as Array<Record<string, unknown>>;
+  return c.json({ board: status, ...row });
+});
+
+/** Force a flush of the Durable Object to Postgres now (normally every FLUSH_INTERVAL_MINUTES). */
+adminRoutes.post('/flush', async (c) => {
+  const counts = await board(c.env).flush();
+  return c.json({ flushed: counts });
 });
 
 const ApiKeyCreate = z.object({ name: z.string().min(1).max(60), scopes: z.array(z.enum(['read:feed', 'ingest'])).min(1) });
@@ -138,10 +147,13 @@ adminRoutes.post('/api-keys', async (c) => {
   const key = `bck_${randomToken(24)}`;
   const hash = await hashApiKey(c.env.API_KEY_PEPPER ?? '', key);
   const rows = (await c.var.sql`INSERT INTO api_keys (name, key_hash, scopes) VALUES (${parsed.data.name}, ${hash}, ${parsed.data.scopes}::text[]) RETURNING id, name, scopes`) as Array<{ id: string; name: string; scopes: string[] }>;
+  await board(c.env).setApiKey(hash, { ...rows[0]!, revoked: false });
   return c.json({ apiKey: { ...rows[0]!, key } }, 201);
 });
 
 adminRoutes.delete('/api-keys/:id', async (c) => {
-  await c.var.sql`UPDATE api_keys SET revoked_at = now() WHERE id = ${c.req.param('id')} AND revoked_at IS NULL`;
+  const id = c.req.param('id');
+  await c.var.sql`UPDATE api_keys SET revoked_at = now() WHERE id = ${id} AND revoked_at IS NULL`;
+  await board(c.env).revokeApiKey(id);
   return c.json({ ok: true });
 });
